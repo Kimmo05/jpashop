@@ -19,4 +19,7 @@ public class Order {
     @JoinColumn(name = "member_id")//member_id를 조인함
     private Member member;
 
+    @OneToOne
+    @JoinColumn(name = "delivery_ID")
+    private Delivery delivery;
 }

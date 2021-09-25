@@ -1,5 +1,6 @@
 package jpaproject.jpashop.controller;
 
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,5 +19,20 @@ public class AdminController {
     @RequestMapping("admin/login")
     public String adminlogin(Model model){
         return "admin/other/login";
+=======
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+@RequiredArgsConstructor
+public class AdminController {
+
+
+    @GetMapping("/admin/main")
+    public String getMemberMainPage(Model model){
+        model.addAttribute("memberForm",new MemberForm());
+        return "zadmin/admin_main";
     }
 }

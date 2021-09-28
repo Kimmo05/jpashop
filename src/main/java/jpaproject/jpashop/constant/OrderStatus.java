@@ -1,11 +1,8 @@
-package jpaproject.jpashop.domain;
+package jpaproject.jpashop.constant;
 
 public enum OrderStatus {
 
     ORDER, CANCEL
-
-        ORDER, CANCEL
-
     //준비중
 
 }

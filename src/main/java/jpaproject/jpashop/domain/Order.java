@@ -2,6 +2,7 @@ package jpaproject.jpashop.domain;
 
 
 
+import jpaproject.jpashop.constant.OrderStatus;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,11 +14,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import javax.persistence.*;
-
 @Entity
 @Table(name = "orders")
 @Getter @Setter
@@ -25,7 +21,8 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "order_id")
     private Long id;
 
@@ -40,19 +37,5 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
-
-public class Order {
-
-    @Id @GeneratedValue
-    @Column(name= "order_id") //주문아이디  =order_id
-    private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY) //지연로딩 //다대1
-    @JoinColumn(name = "member_id")//member_id를 조인함
-    private Member member;
-
-    @OneToOne
-    @JoinColumn(name = "delivery_ID")
-    private Delivery delivery;
-
 }
+

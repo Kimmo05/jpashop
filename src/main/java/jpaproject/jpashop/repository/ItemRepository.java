@@ -10,4 +10,5 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     List<Item> findByItemNm(String itemNm); //상품 찾기
 
+    List<Item> findByItemNmOrItemDetail(String itemNm, String itemDetail);
 }

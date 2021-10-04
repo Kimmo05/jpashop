@@ -1,6 +1,6 @@
 package jpaproject.jpashop.controller;
 
-import jpaproject.jpashop.service.MemberService;
+import jpaproject.jpashop.service.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
@@ -8,6 +8,6 @@ import org.springframework.stereotype.Controller;
 @RequiredArgsConstructor
 public class MemberControllor {
 
-        private final MemberService memberService;
+        private final MemberServiceImpl memberService;
 
 }

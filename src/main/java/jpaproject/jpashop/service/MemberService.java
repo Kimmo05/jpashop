@@ -1,15 +1,13 @@
 package jpaproject.jpashop.service;
 
+import jpaproject.jpashop.domain.Member;
 
-import jpaproject.jpashop.repository.MemberRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+public interface MemberService {
 
-@Service
-@Transactional(readOnly = true)
-@RequiredArgsConstructor
-public class MemberService {
-    private final MemberRepository memberRepository;
+    Member findMemberById(Long id);
+//    Pk를 이용한 회원 찾기
+
+    Member findMemberByLoginId(String loginId);
+// 로그인아이디
 
 }

@@ -3,7 +3,6 @@ package jpaproject.jpashop.domain;
 import jpaproject.jpashop.constant.Role;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.tomcat.jni.Address;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -18,6 +17,8 @@ public class Member {
         @GeneratedValue(strategy = GenerationType.AUTO)
         private Long id;
 
+        private String loginId;
+
         private String name;
 
         @Column(unique = true)
@@ -25,20 +26,17 @@ public class Member {
 
         private String password;
 
-        private String address;
+        @Embedded
+        private Address address;
+
+        private String phoneNumber;
 
         @Enumerated(EnumType.STRING)
         private Role role;
 
-       /* public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder){
-                Member member = new Member();
-                member.setName(memberFormDto.getName());
-                member.setEmail(memberFormDto.getEmail());
-                member.setAddress(memberFormDto.getAddress());
-                String password = passwordEncoder.encode(memberFormDto.getPassword());
-                member.setPassword(password);
-                member.setRole(Role.ADMIN);
-                return member;
-        }*/
+        @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+        private List<Order> orderList = new ArrayList<>();   //order 와 연관관계
+
+
 
 }

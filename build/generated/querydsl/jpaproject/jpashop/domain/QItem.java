@@ -21,9 +21,17 @@ public class QItem extends EntityPathBase<Item> {
 
     public final QBaseTime _super = new QBaseTime(this);
 
+    public final StringPath color = createString("color");
+
+    public final StringPath firstCategory = createString("firstCategory");
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final StringPath imgUrl = createString("imgUrl");
+
     public final StringPath itemDetail = createString("itemDetail");
+
+    public final StringPath itemInfo = createString("itemInfo");
 
     public final StringPath itemNm = createString("itemNm");
 
@@ -34,7 +42,13 @@ public class QItem extends EntityPathBase<Item> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> regTime = _super.regTime;
 
+    public final StringPath secondCategory = createString("secondCategory");
+
+    public final StringPath size = createString("size");
+
     public final NumberPath<Integer> stockQuantity = createNumber("stockQuantity", Integer.class);
+
+    public final StringPath thirdCategory = createString("thirdCategory");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updateTime = _super.updateTime;

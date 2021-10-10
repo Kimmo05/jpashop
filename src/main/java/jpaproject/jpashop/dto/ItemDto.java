@@ -20,4 +20,7 @@ public class ItemDto {
     private LocalDateTime regTime;
 
     private LocalDateTime updateTime;
+    private String imgUrl;
+    private String color;
+
 }

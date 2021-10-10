@@ -27,6 +27,19 @@ public class Item extends BaseTime{
     @Column(nullable = false)
     private int stockQuantity; // 재고수량
 
+    //카테고리
+    private String firstCategory;
+
+    private String secondCategory;
+
+    private String thirdCategory;
+
+    @Column(columnDefinition = "TEXT")
+    private String itemInfo; //아이템정보
+
+
+    private String color;
+    private String size;
 
     @Lob
     @Column(nullable = false)
@@ -35,6 +48,7 @@ public class Item extends BaseTime{
     @Enumerated(EnumType.STRING)
     private ItemSellStatus itemSellStatus; // 상품 판매 상태
 
-
+    @Column(columnDefinition = "TEXT")
+    private String imgUrl;
 
 }

@@ -14,11 +14,5 @@ public class ItemServiceImpl {
     private final MemberRepository memberRepository;
 
 
-    @Transactional
-   @Override
-    public Long saveItem(Item item){
-        itemRepository.save(item);
 
-        return item.getId();
-    }
 }

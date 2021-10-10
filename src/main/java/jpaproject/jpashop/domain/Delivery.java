@@ -1,6 +1,7 @@
 package jpaproject.jpashop.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jpaproject.jpashop.constant.DeliveryStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +20,8 @@ public class Delivery {
     @OneToOne(mappedBy = "delivery", fetch =FetchType.LAZY)
     private Order order;
 
+    @Embedded
+    private Address address;
 
 
     @Enumerated(EnumType.STRING)

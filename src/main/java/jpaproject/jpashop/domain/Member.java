@@ -11,6 +11,7 @@ import java.util.List;
 @Entity //멤버 객체
 @Getter
 @Setter
+@Table(name="members")
 public class Member {
         @Id
         @Column(name="member_id")
@@ -25,7 +26,6 @@ public class Member {
         private String email;
 
         private String password;
-
         @Embedded
         private Address address;
 

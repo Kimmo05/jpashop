@@ -1,21 +1,22 @@
 package jpaproject.jpashop.domain;
 
 import jpaproject.jpashop.constant.ItemSellStatus;
-import jpaproject.jpashop.dto.ItemFormDto;
-import jpaproject.jpashop.exception.OutOfStockException;
+
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-@Table(name = "item")
+@Table(name = "items")
 @Entity
 @Getter @Setter
 public class Item extends BaseTime{
 
     @Id
     @Column(name= "item_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // 상품코드
 
     @Column(nullable = false,length = 50)
@@ -26,14 +27,8 @@ public class Item extends BaseTime{
 
     @Column(nullable = false)
     private int stockQuantity; // 재고수량
-
     //카테고리
-    private String firstCategory;
-
-    private String secondCategory;
-
-    private String thirdCategory;
-
+    private String categoryId;
     @Column(columnDefinition = "TEXT")
     private String itemInfo; //아이템정보
 
@@ -50,5 +45,7 @@ public class Item extends BaseTime{
 
     @Column(columnDefinition = "TEXT")
     private String imgUrl;
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItemList = new ArrayList<>();
 
 }

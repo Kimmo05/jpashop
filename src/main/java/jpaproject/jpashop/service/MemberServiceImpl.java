@@ -13,13 +13,5 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
 
-    @Override
-    public Member findMemberById(Long id) {
-        return null;
-    }
 
-    @Override
-    public Member findMemberByLoginId(String loginId) {
-        return null;
-    }
 }

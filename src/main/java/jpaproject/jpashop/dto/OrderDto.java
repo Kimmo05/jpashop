@@ -15,7 +15,7 @@ public class OrderDto {
     private Long id;
 
     @NotNull(message = "상품 아이디는 필수 입력 값입니다.")
-    private Long orderitemId;
+    private Long order_itemId;
     private String name;
     private String itemNm;
     private OrderStatus orderStatus;

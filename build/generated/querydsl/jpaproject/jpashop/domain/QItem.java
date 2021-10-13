@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -21,12 +22,14 @@ public class QItem extends EntityPathBase<Item> {
 
     public final QBaseTime _super = new QBaseTime(this);
 
+    public final StringPath categoryFirst = createString("categoryFirst");
+
+    public final StringPath categorySecond = createString("categorySecond");
+
     public final StringPath color = createString("color");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
-
-    public final StringPath firstCategory = createString("firstCategory");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
@@ -43,15 +46,13 @@ public class QItem extends EntityPathBase<Item> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
 
-    public final NumberPath<Integer> price = createNumber("price", Integer.class);
+    public final ListPath<OrderItem, QOrderItem> orderItemList = this.<OrderItem, QOrderItem>createList("orderItemList", OrderItem.class, QOrderItem.class, PathInits.DIRECT2);
 
-    public final StringPath secondCategory = createString("secondCategory");
+    public final NumberPath<Integer> price = createNumber("price", Integer.class);
 
     public final StringPath size = createString("size");
 
     public final NumberPath<Integer> stockQuantity = createNumber("stockQuantity", Integer.class);
-
-    public final StringPath thirdCategory = createString("thirdCategory");
 
     public QItem(String variable) {
         super(Item.class, forVariable(variable));

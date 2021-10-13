@@ -11,13 +11,14 @@ import javax.persistence.Embeddable;
 @Getter
 @Setter
 public class Address {
-    private String city;
+
     private String street;
+    private String detailAddress;
     private String zipcode;
 
-    public Address(String city, String street, String zipcode) {
-        this.city = city;
+    public Address(String street, String detailAddress, String zipcode) {
         this.street = street;
+        this.detailAddress = detailAddress;
         this.zipcode = zipcode;
     }
 }

@@ -21,23 +21,16 @@ public class ItemFormDto {
     private Integer price;
 
     @NotBlank(message = "상품 상세는 필수 입력 값입니다.")
-    private String itemDetail;
+    private String itemInfo;
 
     @NotNull(message = "재고는 필수 입력 값입니다.")
     private Integer stockQuantity;
 
     private ItemSellStatus itemSellStatus;
 
+    private List<String> colorList;
+    private List<String> imgUrl;
 
-    private List<Long> itemImgIds = new ArrayList<>();
 
-//    private static ModelMapper modelMapper = new ModelMapper();
-//
-//    public Item createItem(){
-//        return modelMapper.map(this, Item.class);
-//    }
-//
-//    public static ItemFormDto of(Item item){
-//        return modelMapper.map(item,ItemFormDto.class);
-//    }
+    //상품등록 DTO
 }

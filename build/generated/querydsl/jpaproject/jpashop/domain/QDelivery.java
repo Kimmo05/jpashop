@@ -22,9 +22,17 @@ public class QDelivery extends EntityPathBase<Delivery> {
 
     public static final QDelivery delivery = new QDelivery("delivery");
 
+    public final QBaseTime _super = new QBaseTime(this);
+
     public final QAddress address;
 
+    //inherited
+    public final DatePath<java.time.LocalDate> createdAt = _super.createdAt;
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    //inherited
+    public final DatePath<java.time.LocalDate> modifiedAt = _super.modifiedAt;
 
     public final QOrder order;
 

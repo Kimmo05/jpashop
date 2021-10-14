@@ -1,13 +1,15 @@
 package jpaproject.jpashop.service;
 
 import jpaproject.jpashop.domain.Member;
+import jpaproject.jpashop.dto.MemberFormDto;
 
 public interface MemberService {
 
-    Member findMemberById(Long id);
-//    Pk를 이용한 회원 찾기
+    Long signUp(MemberFormDto memberFormDto);
+    //회원가입
 
-    Member findMemberByLoginId(String loginId);
-// 로그인아이디
+
+    boolean doubleCheckId(String registerId);
+    //  회원 중복 체크
 
 }

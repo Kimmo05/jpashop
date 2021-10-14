@@ -1,6 +1,7 @@
 package jpaproject.jpashop.constant;
 
 public enum DeliveryStatus {
-    READY, COMP , CANCEL
+    READY, COMPLETE , CANCEL
+    //준비중 / 완료 /취소
 
 }

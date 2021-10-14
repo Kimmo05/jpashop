@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -23,13 +24,14 @@ public class QItem extends EntityPathBase<Item> {
 
     public final StringPath color = createString("color");
 
+    //inherited
+    public final DatePath<java.time.LocalDate> createdAt = _super.createdAt;
+
     public final StringPath firstCategory = createString("firstCategory");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath imgUrl = createString("imgUrl");
-
-    public final StringPath itemDetail = createString("itemDetail");
 
     public final StringPath itemInfo = createString("itemInfo");
 
@@ -37,21 +39,18 @@ public class QItem extends EntityPathBase<Item> {
 
     public final EnumPath<jpaproject.jpashop.constant.ItemSellStatus> itemSellStatus = createEnum("itemSellStatus", jpaproject.jpashop.constant.ItemSellStatus.class);
 
-    public final NumberPath<Integer> price = createNumber("price", Integer.class);
-
     //inherited
-    public final DateTimePath<java.time.LocalDateTime> regTime = _super.regTime;
+    public final DatePath<java.time.LocalDate> modifiedAt = _super.modifiedAt;
+
+    public final ListPath<OrderItem, QOrderItem> orderItemList = this.<OrderItem, QOrderItem>createList("orderItemList", OrderItem.class, QOrderItem.class, PathInits.DIRECT2);
+
+    public final NumberPath<Integer> price = createNumber("price", Integer.class);
 
     public final StringPath secondCategory = createString("secondCategory");
 
     public final StringPath size = createString("size");
 
     public final NumberPath<Integer> stockQuantity = createNumber("stockQuantity", Integer.class);
-
-    public final StringPath thirdCategory = createString("thirdCategory");
-
-    //inherited
-    public final DateTimePath<java.time.LocalDateTime> updateTime = _super.updateTime;
 
     public QItem(String variable) {
         super(Item.class, forVariable(variable));

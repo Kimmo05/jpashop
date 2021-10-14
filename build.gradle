@@ -29,6 +29,7 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	annotationProcessor 'org.projectlombok:lombok'
+	runtimeOnly 'com.h2database:h2'
 
 	//JUnit4 추가
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
@@ -59,8 +60,7 @@ dependencies {
 	//webp-io
 	// https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio
 	implementation group: 'org.sejda.imageio', name: 'webp-imageio', version: '0.1.1'
-	//query parameter log
-	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.6'
+
 }
 
 test {

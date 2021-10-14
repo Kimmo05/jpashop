@@ -22,13 +22,21 @@ public class QMember extends EntityPathBase<Member> {
 
     public static final QMember member = new QMember("member1");
 
+    public final QBaseTime _super = new QBaseTime(this);
+
     public final QAddress address;
+
+    //inherited
+    public final DatePath<java.time.LocalDate> createdAt = _super.createdAt;
 
     public final StringPath email = createString("email");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath loginId = createString("loginId");
+
+    //inherited
+    public final DatePath<java.time.LocalDate> modifiedAt = _super.modifiedAt;
 
     public final StringPath name = createString("name");
 
@@ -39,6 +47,8 @@ public class QMember extends EntityPathBase<Member> {
     public final StringPath phoneNumber = createString("phoneNumber");
 
     public final EnumPath<jpaproject.jpashop.constant.Role> role = createEnum("role", jpaproject.jpashop.constant.Role.class);
+
+    public final NumberPath<Integer> visitCount = createNumber("visitCount", Integer.class);
 
     public QMember(String variable) {
         this(Member.class, forVariable(variable), INITS);

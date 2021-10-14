@@ -16,10 +16,9 @@ public class ItemDto {
     private String itemDetail;
 
     private String sellStatCd;
+    private String firstCategory;
+    private String secondCategory;
 
-    private LocalDateTime regTime;
-
-    private LocalDateTime updateTime;
     private String imgUrl;
     private String color;
 

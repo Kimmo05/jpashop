@@ -9,9 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class ItemServiceImpl {
+public class ItemServiceImpl implements ItemService{
     private final ItemRepository itemRepository;
     private final MemberRepository memberRepository;
+
 
 
 

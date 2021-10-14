@@ -14,18 +14,5 @@ public class OrderServiceImpl implements OrderService{
 
     private final OrderRepository orderRepository;
 
-    @Override
-    public List<Order> findAllOrders(){
-        return orderRepository.findAll();
-    }
 
-    @Override
-    public void cancelOrder(Long orderId) {
-
-    }
-
-    @Override
-    public Long changeOrderStatus(Long orderItemId, OrderStatus orderStatus) {
-        return null;
-    }
 }

@@ -22,15 +22,25 @@ public class QOrder extends EntityPathBase<Order> {
 
     public static final QOrder order = new QOrder("order1");
 
+    public final QBaseTime _super = new QBaseTime(this);
+
+    //inherited
+    public final DatePath<java.time.LocalDate> createdAt = _super.createdAt;
+
     public final QDelivery delivery;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final QMember member;
 
-    public final DateTimePath<java.time.LocalDateTime> orderDate = createDateTime("orderDate", java.time.LocalDateTime.class);
+    //inherited
+    public final DatePath<java.time.LocalDate> modifiedAt = _super.modifiedAt;
 
-    public final EnumPath<jpaproject.jpashop.constant.OrderStatus> orderStatus = createEnum("orderStatus", jpaproject.jpashop.constant.OrderStatus.class);
+    public final DatePath<java.time.LocalDate> orderDate = createDate("orderDate", java.time.LocalDate.class);
+
+    public final ListPath<OrderItem, QOrderItem> orderItemList = this.<OrderItem, QOrderItem>createList("orderItemList", OrderItem.class, QOrderItem.class, PathInits.DIRECT2);
+
+    public final StringPath payment = createString("payment");
 
     public final NumberPath<Integer> totalPrice = createNumber("totalPrice", Integer.class);
 

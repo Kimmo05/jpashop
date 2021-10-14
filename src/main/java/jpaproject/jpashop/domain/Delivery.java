@@ -10,9 +10,9 @@ import javax.persistence.*;
 @Table(name = "delivery")
 @Entity
 @Getter @Setter
-public class Delivery {
+public class Delivery extends BaseTime {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "delivery_id")
     private Long id;
 

@@ -32,6 +32,8 @@ public class QOrderItem extends EntityPathBase<OrderItem> {
 
     public final NumberPath<Integer> orderPrice = createNumber("orderPrice", Integer.class);
 
+    public final EnumPath<jpaproject.jpashop.constant.OrderStatus> orderStatus = createEnum("orderStatus", jpaproject.jpashop.constant.OrderStatus.class);
+
     public QOrderItem(String variable) {
         this(OrderItem.class, forVariable(variable), INITS);
     }

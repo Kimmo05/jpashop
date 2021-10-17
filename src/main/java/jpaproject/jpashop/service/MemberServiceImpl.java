@@ -5,6 +5,7 @@ import jpaproject.jpashop.constant.Role;
 import jpaproject.jpashop.domain.Address;
 import jpaproject.jpashop.domain.Member;
 import jpaproject.jpashop.dto.MemberFormDto;
+import jpaproject.jpashop.exception.LoginIdNotFoundException;
 import jpaproject.jpashop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,33 +23,32 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class MemberServiceImpl implements UserDetailsService, MemberService{
     private final MemberRepository memberRepository;
-    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    @Override
+    public Member findMemberById(Long id) {
+        return memberRepository.findById(id).orElseThrow(
+                () -> new LoginIdNotFoundException("해당하는 회원이 존재하지 않습니다")
+        );
+    }
 
-   public Long signUp(MemberFormDto memberFormDto ){
+    @Override
+    public Member findMemberByLoginId(String loginId) {
+        return memberRepository.findByloginId(loginId).orElseThrow(
+                () -> new LoginIdNotFoundException("해당하는 회원이 존재하지 않습니다")
+        );
 
-       validateDuplicateMember(memberFormDto.getLoginId());
+    }
+    @Transactional
+    @Override
+    public Long joinUser(MemberFormDto memberFormDto) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        memberFormDto.setPassword(passwordEncoder.encode(memberFormDto.getPassword()));
 
-        //회원정보저장하는곳
-
-       Member member = Member.builder()
-               .address(new Address(memberFormDto.getDetailStreet(),memberFormDto.getStreet(),memberFormDto.getZipcode()))
-               .loginId(memberFormDto.getLoginId())
-               .email(memberFormDto.getEmail())
-               .name(memberFormDto.getName())
-               .password(passwordEncoder.encode(memberFormDto.getPassword()))
-               .phoneNumber(memberFormDto.getPhoneNumber())
-               .build();
-       Long memberId = memberRepository.save(member).getId();
-       return memberId;
-   }
-
-
-
+        return memberRepository.save(memberFormDto.toEntity()).getId();
+    }
     @Override
     public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
 
@@ -78,31 +78,15 @@ public class MemberServiceImpl implements UserDetailsService, MemberService{
 //    return은 스프링 시큐리티에서 제공하는 UserDetails를 구현한 User를 반환한다.
 //    생성자의 각 매개변수는 순서대로 아이디, 비밀번호, 권한리스트이다.
 
-    private void validateDuplicateMember(String loginId) {
-        Optional<Member> findMember= memberRepository.findByloginId(loginId);
-        if(findMember.isPresent())
-            throw new IllegalStateException("이미 존재하는 회원입니다");
-    }
 
-
-    private Member validateExistMember(Optional<Member> member) {
-       if(!member.isPresent())
-           throw new IllegalStateException("존재하지 않는 유저입니다,");
-       return member.get();
-    }
-
-    public Member findMember(Long Id) {
-        Member member = validateExistMember(memberRepository.findById(Id));
-
-        return member;
-    }
     @Transactional(readOnly = true)
     @Override
     public boolean doubleCheckId(String registerId) {
         Optional<Member> findMember = memberRepository.findByloginId(registerId);
         return findMember.isPresent();
     } //이부분은 회원중복체크부분 아직 사용 안함
-    public List<Member> findAllMember() {
-        return memberRepository.findAll();
-    }
+
+
+
+
 }

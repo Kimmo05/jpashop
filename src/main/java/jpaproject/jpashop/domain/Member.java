@@ -4,6 +4,7 @@ import jpaproject.jpashop.constant.Role;
 import jpaproject.jpashop.dto.MemberFormDto;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -14,18 +15,19 @@ import java.util.List;
 @Entity //멤버 객체
 @Getter
 @Setter
+@NoArgsConstructor //파라미터가없는 기본 생성자를 생성해줌
 public class Member extends BaseTime {
         @Id
         @Column(name="member_id")
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
-        private String loginId;
+        private String loginId; //로그인 아이디
 
-        private String name;
+        private String name; //이름
 
-        @Column(unique = true)
-        private String email;
+
+        private String email;  // 필수항목
 
         private String password;
 
@@ -35,27 +37,36 @@ public class Member extends BaseTime {
         private String phoneNumber;
 
         @Enumerated(EnumType.STRING)
-        private Role role;
+        private Role role;  // 멤버 등급
 
         private int visitCount; //방문자수
+        private int orderCount; //주문수
+
 
         @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-        private List<Order> orderList = new ArrayList<>();   //order 와 연관관계
-
+        private List<Order> orderList = new ArrayList<>();
 
         @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
         private List<DeliveryAddress> deliveryAddressList = new ArrayList<>();
-        //배송주소와 연관
+
+        @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+        private List<Basket> basketList = new ArrayList<>();
+
+        public Member(String name, String loginId, String password) {
+                this.name = name;
+                this.loginId = loginId;
+                this.password = password;
+        }
 
         @Builder
-        public Member( String loginId, String name, String email,
-                      String password, Address address, String phoneNumber
-                 ) {
+        public Member(Long id, String loginId, String password, String name, String phoneNumber, String email) {
+                this.id = id;
                 this.loginId = loginId;
-                this.name = name;
-                this.email = email;
                 this.password = password;
-                this.address = address;
+                this.name = name;
                 this.phoneNumber = phoneNumber;
+                this.email = email;
+
         }
+
 }

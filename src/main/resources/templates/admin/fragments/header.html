@@ -3,6 +3,8 @@
 <head th:fragment="header">
     <!-- Required meta tags -->
     <meta charset="utf-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Favicon -->
     <link href="/admin/img/brand/favicon.png" rel="icon" type="image/png">
@@ -21,6 +23,7 @@
     <script src="/admin/js/plugins/chart.js/dist/Chart.extension.js"></script>
     <!--   Argon JS   -->
     <script src="/admin/js/argon-dashboard.min.js?v=1.1.2"></script>
+    <script src="/admin/js/jquery.js"></script>
     <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
     <script>
         window.TrackJS &&

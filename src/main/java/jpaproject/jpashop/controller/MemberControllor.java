@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
@@ -26,36 +27,22 @@ public class MemberControllor {
 
 
         @GetMapping(value = "/register")
-        public String memberForm(Model model)
+        public String memberForm()
         {
                 return "admin/other/register";
         } //회원등록 를 누르면 회원가입페이지로 감
 
+
         @PostMapping("main/register")
-        public String doRegisterPage(@ModelAttribute @Valid MemberFormDto memberFormDto) {
+        public String doRegisterPage(MemberFormDto memberFormDto) {
+                Long memberId = memberServiceImpl.joinUser(memberFormDto);
 
-              memberServiceImpl.signUp(memberFormDto);
-              //signup 메소드
 
-                return "redirect:/main/login"; //회원가입하면 로그인화면으로
+                return "redirect:/admin/login";
         }
-
-
-        @GetMapping("/main/login")
-        public String getSignInPage() {
-                return "admin/other/login";
-        }
-
-        // signIn 처리는 Spring security
-        @GetMapping("/main/signInError")
-        public String getSignInPageWithError(Model model) {
-                model.addAttribute("loginError", "true");
-                return "admin/other/signIn";
-        }
-        //로그인 컨트롤러 부분
 
         @ResponseBody
-        @PostMapping("/main/register/doublecheck")
+        @PostMapping("/register/doublecheck")
         public String idDoubleCheckPage(@RequestParam(value = "registerId") String registerId) {
                 if (memberServiceImpl.doubleCheckId(registerId)) {
                         return "사용할 수 없는 아이디입니다.";
@@ -63,4 +50,27 @@ public class MemberControllor {
                         return "사용할 수 있는 아이디입니다.";
                 }
         } //중복 체크 부분 아직 사용안함
+
+        @GetMapping("admin/login")
+        public String adminlogin(HttpServletRequest request, @RequestParam(value = "error", required = false) String error, Model model) {
+                String referer = request.getHeader("Referer");
+                if (referer != null) {
+                        request.getSession().setAttribute("prevPage", referer);
+                } else {
+                        referer = "http://localhost:8080/admin/admin_main";
+                        request.getSession().setAttribute("prevPage", referer);
+                }
+                model.addAttribute("error", error);
+                return "admin/other/login";
+        }
+        @GetMapping("/defaultUrl")
+        public String loginRedirectPage(HttpServletRequest request) {
+                String referer = request.getHeader("Referer");
+
+                referer = "http://localhost:8080/admin/home";
+                request.getSession().setAttribute("prevPage", referer);
+
+                return "redirect:/admin/home";
+        }
+
 }

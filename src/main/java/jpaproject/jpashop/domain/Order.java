@@ -15,7 +15,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +44,7 @@ public class Order extends BaseTime{
     private List<OrderItem> orderItemList = new ArrayList<>();
 
 
-    private LocalDate orderDate; //주문일
+    private LocalDate  orderedAt; //주문일
 
 
     private String payment; // 지불금액
@@ -54,6 +54,7 @@ public class Order extends BaseTime{
         this.member = member;
         member.getOrderList().add(this);
     }
+
     public void setDelivery(Delivery delivery) {
         this.delivery = delivery;
         delivery.setOrder(this);
@@ -64,23 +65,37 @@ public class Order extends BaseTime{
         orderItem.setOrder(this);
     }
 
+    // 생성 메소드
+    public static Order createOrder(Member member, Delivery delivery, List<OrderItem> orderItems) {
+        Order order = new Order();
+        order.setMember(member);
+        order.setDelivery(delivery);
+
+        for (OrderItem orderItem : orderItems) {
+            order.addOrderItem(orderItem);
+        }
+        order.setOrderedAt(LocalDate.now());
+        order.setPayment("카드결제");
+        order.setTotalPrice(order.getCalTotalPrice());
+
+        return order;
+    }
 
     /* 비즈니스 로직 */
 
     public void orderCancel() {
-        if (this.delivery.getStatus() == DeliveryStatus.COMPLETE) { //배송상태가 완료일경우
+        if (this.delivery.getDeliveryStatus() == DeliveryStatus.COMPLETE) {
+            //취소를 눌렀을때 COMPLETE상태면 이미 배송완료된 상품
             throw new DeliveryException("이미 배송완료된 상품입니다.");
         } else {
-//            this.setOrderStatus(OrderStatus.CANCEL);
-            this.delivery.setStatus(DeliveryStatus.CANCEL); //아닐경우 CANCEL로 변경
-
+            this.delivery.setDeliveryStatus(DeliveryStatus.CANCEL);
             for (OrderItem orderItem : orderItemList) {
-                orderItem.itemCancel();
+                orderItem.itemCancel(); //아니면 CANCEL로 변경후  리스트에서 아이템을 제거함
             }
         }
     }// 주문 취소
 
-    public int getCalTotalPrice() { //총가격
+    public int getCalTotalPrice() {
         int totalPrice = 0;
         for (OrderItem orderItem : orderItemList) {
             totalPrice += orderItem.getCalPrice();

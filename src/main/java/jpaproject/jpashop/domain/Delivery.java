@@ -25,5 +25,5 @@ public class Delivery extends BaseTime {
 
 
     @Enumerated(EnumType.STRING)
-    private DeliveryStatus status;
+    private DeliveryStatus deliveryStatus;
 }

@@ -12,11 +12,11 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Address {
     private String street;
-    private String detailStreet;
+    private String dtStreet;
     private String zipcode;
 
-    public Address(String detailStreet, String street, String zipcode) {
-        this.detailStreet = detailStreet;
+    public Address(String dtStreet, String street, String zipcode) {
+        this.dtStreet = dtStreet;
         this.street = street;
         this.zipcode = zipcode;
     }

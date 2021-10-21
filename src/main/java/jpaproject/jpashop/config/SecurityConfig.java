@@ -41,11 +41,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/main/order", "/main/profile", "/main/mileage", "/main/address",
                         "/main/basket", "/main/payment", "/main/product/basketadd_ok").authenticated() //  로그인된 사용자가 요청을 수행할 떄 필요하다  만약 사용자가 인증되지 않았다면, 스프링 시큐리티 필터는 요청을 잡아내고 사용자를 로그인 페이지로 리다이렉션 해준다.
 //                .antMatchers("/main/home", "/main/category/**", "/main/product/**").permitAll()
-                .antMatchers("/admin/home", "/main/category/**", "/main/product/**").permitAll()
+                .antMatchers("/main/**","/admin/**","/admin/home", "/main/category/**", "/main/product/**").permitAll()
                 //지금 메인페이지가없어서 임시로 /admin/home을 모든권한으로 설정함
                 .and() // 로그인 설정
                 .formLogin() // 하위에 내가 직접 구현한 로그인 폼, 로그인 성공시 이동 경로 설정 가능
-                .loginPage("/main/login") // 로그인이 수행될 경로.
+                .loginPage("/admin/login") // 로그인이 수행될 경로.
                 .usernameParameter("loginId")
                 .successHandler(successHandler())
                 .failureHandler(customFailureHandler)// 인증에 실패했을 때
@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and() // 로그아웃 설정
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/main/index")
+                .logoutSuccessUrl("/admin/home")
                 .invalidateHttpSession(true)
                 .and()
                 // 403 예외처리 핸들링

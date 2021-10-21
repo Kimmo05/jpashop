@@ -4,10 +4,15 @@ package jpaproject.jpashop.service;
 import jpaproject.jpashop.constant.Role;
 import jpaproject.jpashop.domain.Address;
 import jpaproject.jpashop.domain.Member;
+import jpaproject.jpashop.domain.SearchMember;
+import jpaproject.jpashop.dto.MemberDto;
 import jpaproject.jpashop.dto.MemberFormDto;
+import jpaproject.jpashop.dto.MemberPageDto;
 import jpaproject.jpashop.exception.LoginIdNotFoundException;
 import jpaproject.jpashop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -86,7 +91,34 @@ public class MemberServiceImpl implements UserDetailsService, MemberService{
         return findMember.isPresent();
     } //이부분은 회원중복체크부분 아직 사용 안함
 
+    @Override
+    public MemberPageDto findAllMemberByPaging(Pageable pageable) {
+        MemberPageDto memberPageDto = new MemberPageDto();
+        Page<MemberDto> memberBoards = memberRepository.searchAll(pageable);
+        int homeStartPage = Math.max(1, memberBoards.getPageable().getPageNumber());
+        int homeEndPage = Math.min(memberBoards.getTotalPages(), memberBoards.getPageable().getPageNumber() + 5);
 
+        memberPageDto.setMemberBoards(memberBoards);
+        memberPageDto.setHomeStartPage(homeStartPage);
+        memberPageDto.setHomeEndPage(homeEndPage);
+
+        return memberPageDto;
+    }
+
+    @Override
+    public MemberPageDto findAllMemberByConditionByPaging(SearchMember searchMember, Pageable pageable) {
+        MemberPageDto memberPageDto = new MemberPageDto();
+        Page<MemberDto> memberBoards = memberRepository.searchByCondition(searchMember, pageable);
+
+        int startPage = Math.max(1, memberBoards.getPageable().getPageNumber() - 2);
+        int endPage = Math.min(memberBoards.getTotalPages(), startPage + 4);
+
+        memberPageDto.setMemberBoards(memberBoards);
+        memberPageDto.setHomeStartPage(startPage);
+        memberPageDto.setHomeEndPage(endPage);
+
+        return memberPageDto;
+    }
 
 
 }

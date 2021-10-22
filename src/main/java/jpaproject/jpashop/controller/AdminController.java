@@ -13,6 +13,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -49,6 +50,13 @@ public class AdminController {
         model.addAttribute("searchCondition", searchMember.getSearchCondition());
         model.addAttribute("searchKeyword", searchMember.getSearchKeyword());
 
-        return "admin/admin_userlist";
+        return "admin/other/userList";
     }
+    @GetMapping("/admin/userList/user/{id}")
+    public String pageUser(@PathVariable Long id, Model model) {
+        model.addAttribute("Member", memberServiceImpl.findMemberById(id));
+
+        return "admin/admin_user";
+    }
+
 }

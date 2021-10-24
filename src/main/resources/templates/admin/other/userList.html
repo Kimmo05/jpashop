@@ -240,7 +240,7 @@
     <div class="container-fluid">
       <div class="header-body">
         <!-- 회원리스트 검색 폼 시작 -->
-        <form class="container-fluid mt-4">
+        <form class="container-fluid mt-4" method="GET" th:action="@{/admin/userList}">
           <div class="input-group input-group-rounded input-group-merge">
             <!--input회원리스트_검색--><input type="search" class="form-control form-control-rounded form-control-prepended" placeholder="Search" aria-label="Search">
             <!--button회원리스트_검색--><button type="submit">
@@ -269,6 +269,19 @@
                   </tr>
                   </thead>
                   <tbody>
+                  <tr th:each="user : ${memberList}">
+                    <td><input type="checkbox" class="checkbox-select"></td>
+                    <td th:text = "${user.name} + '(' + ${user.loginId}+ ')'">채창완(sejchae)</td>
+                    <td th:text = "${user.memberGrade}">일반회원</td>
+                    <td th:text = "${#strings.replace(user.phoneNumber, ',', '-')}">010-1234-5678</td>
+                    <td th:text = "${user.visitCount}">11</td>
+                    <td th:text = "${user.orderCount}">2</td>
+                    <td>2000원</td>
+                    <td th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd')}">2021-05-12</td>
+                    <td><input type="button" value="보기" class="userdetailbtn table-btn" th:onclick="|openUserDetail('${user.id}')|"></td>
+                    <td><input type="button" value="삭제" class="deletebtn table-btn" th:onclick="|deleteUser('${user.id}')|"></td>
+                    <input type="hidden" th:value="${user.id}">
+                  </tr>
                   <tr>
                     <th scope="row">
                       <div class="media align-items-center">

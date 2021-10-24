@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 public interface ItemService {
     Page<ItemDto> findAllItem(Pageable pageable);
     Page<ItemDto> findAllItemByCondition(SearchItem searchItem, Pageable pageable);
+
+
     ItemPageDto findAllItemByPaging(Pageable pageable);
 
     ItemPageDto findAllItemByConditionByPaging(SearchItem searchItem, Pageable pageable);

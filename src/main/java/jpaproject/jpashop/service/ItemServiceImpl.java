@@ -18,7 +18,13 @@ public class ItemServiceImpl implements ItemService{
     private final ItemRepository itemRepository;
     private final MemberRepository memberRepository;
 
+    @Transactional
+    @Override
+    public Long saveItem(Item item) {
+        itemRepository.save(item);
 
+        return item.getId();
+    }// 상품 저장
     //findAllItem
     @Override
     public Page<ItemDto> findAllItem(Pageable pageable) {

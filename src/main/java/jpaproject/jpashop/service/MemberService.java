@@ -4,6 +4,7 @@ import jpaproject.jpashop.domain.Member;
 import jpaproject.jpashop.domain.SearchMember;
 import jpaproject.jpashop.dto.MemberFormDto;
 import jpaproject.jpashop.dto.MemberPageDto;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 
@@ -20,4 +21,8 @@ public interface MemberService {
     MemberPageDto findAllMemberByPaging(Pageable pageable);
 
     MemberPageDto findAllMemberByConditionByPaging(SearchMember searchMember, Pageable pageable);
+
+    Page<Member> findAllMemberByOrderByCreatedAt(Pageable pageable);
+//    등록 순서에 따라 회원 조회하는 메소드
+
 }

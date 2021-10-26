@@ -47,8 +47,7 @@ public class MemberFormDto {
 
     @Builder
     public MemberFormDto(Long id,String loginId, String name, String email,
-                         String password, String street, String detailStreet,
-                         String zipcode, String phoneNumber) {
+                         String password, String phoneNumber) {
         this.id = id;
         this.loginId = loginId;
         this.name = name;

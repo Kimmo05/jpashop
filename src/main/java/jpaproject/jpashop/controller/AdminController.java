@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 public class AdminController {
     private final MemberServiceImpl memberServiceImpl;
     private final ItemServiceImpl itemServiceImpl;
-    @GetMapping("admin/home")
+    @GetMapping("/")
     public String admin(Model model) {
         return "/admin/admin_main";
     }

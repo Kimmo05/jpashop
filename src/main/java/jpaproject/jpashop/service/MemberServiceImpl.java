@@ -120,5 +120,8 @@ public class MemberServiceImpl implements UserDetailsService, MemberService{
         return memberPageDto;
     }
 
-
+    @Override
+    public Page<Member> findAllMemberByOrderByCreatedAt(Pageable pageable) {
+        return memberRepository.findAllByOrderByCreatedAt(pageable);
+    }
 }

@@ -23,6 +23,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
 
         this.queryFactory = new JPAQueryFactory(em);
     }
+    //모두 검색
     @Override
     public Page<MemberDto> searchAll(Pageable pageable) {
         QueryResults<MemberDto> results = queryFactory
@@ -37,15 +38,15 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
                         QMember.member.createdAt
                 ))
                 .from(QMember.member)
-                .orderBy(QMember.member.createdAt.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .orderBy(QMember.member.createdAt.desc()) //생성날짜기준.내림차순 정렬
+                .offset(pageable.getOffset()) //시작 위치
+                .limit(pageable.getPageSize()) //제한 갯수
                 .fetchResults();
+//참고로 orderby가 있다면 카운트 쿼리에서는 자동으로 orderby가 지워지고 쿼리가 나간다.
+        List<MemberDto> content = results.getResults(); //조회된 리스트로 결과를 반환
+        long total = results.getTotal(); //전체 컨텐츠 갯수를 반환
 
-        List<MemberDto> content = results.getResults();
-        long total = results.getTotal();
-
-        return new PageImpl<>(content, pageable, total);
+        return new PageImpl<>(content, pageable, total); //파라미터로 content, pageable, total을 받는다
     }
 
     @Override
@@ -109,4 +110,6 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
         }
         return QMember.member.name.likeIgnoreCase("%" + nameCondition + "%");
     }
+
+
 }

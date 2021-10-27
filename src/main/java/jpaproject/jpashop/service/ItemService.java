@@ -11,6 +11,8 @@ public interface ItemService {
     Page<ItemDto> findAllItem(Pageable pageable);
     Page<ItemDto> findAllItemByCondition(SearchItem searchItem, Pageable pageable);
 
+    Long saveItem(Item item);
+//    상품 저장하는 메소드
 
     ItemPageDto findAllItemByPaging(Pageable pageable);
 

@@ -82,35 +82,17 @@
                         </div>
                       </div>
                     </th>
-                    <td>
-                      $2,500 USD
-                    </td>
+                    <td th:text = "${user.name} + '(' + ${user.loginId}+ ')'">채창완(sejchae)</td>
                     <td>
                         <span class="badge badge-dot mr-4">
                           <i class="bg-warning"></i> pending
                         </span>
                     </td>
 
-                    <td>
-                      <div class="d-flex align-items-center">
-                        <span class="mr-2">60%</span>
-                        <div>
-                          <div class="progress">
-                            <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="text-right">
-                      <div class="dropdown">
-                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <i class="fas fa-ellipsis-v"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                          <a class="dropdown-item" href="./editUser.html">수정</a>
-                        </div>
-                      </div>
-                    </td>
+                    <td th:text = "${user.memberGrade}">일반회원</td>
+                    <td th:text = "${#strings.replace(user.phoneNumber, ',', '-')}">010-1234-5678</td>
+                    <td th:text = "${user.visitCount}">11</td>
+                    <td th:text = "${user.orderCount}">2</td>
                   </tr>
 
                   </tbody>

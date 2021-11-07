@@ -29,7 +29,7 @@ public class MemberControllor {
         @GetMapping(value = "/register")
         public String memberForm()
         {
-                return "admin/other/register";
+                return "members/register";
         } //회원등록 를 누르면 회원가입페이지로 감
 
 
@@ -38,11 +38,11 @@ public class MemberControllor {
                 Long memberId = memberServiceImpl.joinUser(memberFormDto);
 
 
-                return "redirect:/admin/login";
+                return "redirect:main/login";
         }
 
         @ResponseBody
-        @PostMapping("/register/doublecheck")
+        @PostMapping("/doublecheck")
         public String idDoubleCheckPage(@RequestParam(value = "registerId") String registerId) {
                 if (memberServiceImpl.doubleCheckId(registerId)) {
                         return "사용할 수 없는 아이디입니다.";
@@ -51,26 +51,26 @@ public class MemberControllor {
                 }
         } //중복 체크 부분 아직 사용안함
 
-        @GetMapping("admin/login")
-        public String adminlogin(HttpServletRequest request, @RequestParam(value = "error", required = false) String error, Model model) {
+        @GetMapping("main/login")
+        public String getLoginPage(HttpServletRequest request, @RequestParam(value = "error", required = false) String error,Model model) {
                 String referer = request.getHeader("Referer");
                 if (referer != null) {
                         request.getSession().setAttribute("prevPage", referer);
                 } else {
-                        referer = "http://localhost:8080/admin/admin_main";
+                        referer = "http://localhost:8080/main/index";
                         request.getSession().setAttribute("prevPage", referer);
                 }
                 model.addAttribute("error", error);
-                return "admin/other/login";
+                return "members/login";
         }
         @GetMapping("/defaultUrl")
         public String loginRedirectPage(HttpServletRequest request) {
                 String referer = request.getHeader("Referer");
 
-                referer = "http://localhost:8080/admin/home";
+                referer = "http://localhost:8080/";
                 request.getSession().setAttribute("prevPage", referer);
 
-                return "redirect:/admin/home";
+                return "redirect:/";
         }
 
 }

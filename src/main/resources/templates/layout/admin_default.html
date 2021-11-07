@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<th:block th:replace="fragments/admin/admin_header :: admin_header">
+    <title>Admin</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+</th:block>
+<body>
+    <div id="wrapper">
+        <th:block th:replace="fragments/admin/sidebar :: sidebar"/>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <th:block th:replace="fragments/admin/admin_top :: admin_top"/>
+<!--                본문-->
+                <div class="container-fluid">
+                    <th:block layout:fragment="content"/>
+                </div>
+            </div>
+            <div th:replace="fragments/admin/admin_footer :: admin_footer"/>
+        </div>
+    </div>
+    <th:block th:replace="fragments/admin/admin_script :: admin_script"/>
+</body>
+</html>

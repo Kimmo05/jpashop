@@ -89,7 +89,7 @@ public class MemberServiceImpl implements UserDetailsService, MemberService{
     public boolean doubleCheckId(String registerId) {
         Optional<Member> findMember = memberRepository.findByloginId(registerId);
         return findMember.isPresent();
-    } //이부분은 회원중복체크부분 아직 사용 안함
+    }
 
     @Override
     public MemberPageDto findAllMemberByPaging(Pageable pageable) {

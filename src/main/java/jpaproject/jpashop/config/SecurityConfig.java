@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception
     { // 4
-        web.ignoring().antMatchers("/admin/css/**", "/admin/js/**", "/admin/img/**", "/admin/lib/**");
+        web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**","/vendor/**");
     }
     //static 하위 폴더 (css, js, img)는 무조건 접근이 가능해야하기 때문에 인증을 무시해야합니다.
     //        WebSecurity는 FilterChainProxy를 생성하는 필터이다.
@@ -48,11 +48,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasRole("ADMIN") // 괄호의 권한을 가진 유저만 접근가능, ROLE_가 붙어서 적용 됨. 즉, 테이블에 ROLE_권한명 으로 저장해야 함.
                 .antMatchers("/main/order").authenticated()
                 //  로그인된 사용자가 요청을 수행할 떄 필요하다  만약 사용자가 인증되지 않았다면, 스프링 시큐리티 필터는 요청을 잡아내고 사용자를 로그인 페이지로 리다이렉션 해준다.
-               .antMatchers("/main/home").permitAll()
+               .antMatchers("/main/index","members/register").permitAll()
                 .and() // 로그인 설정
                 .formLogin() // 하위에 내가 직접 구현한 로그인 폼, 로그인 성공시 이동 경로 설정 가능
-                .loginPage("/admin/login") // 로그인이 수행될 경로.
+                .loginPage("/members/login") // 로그인이 수행될 경로.
                 .usernameParameter("loginId")//파라미터를 변경함 원래는 username이다.
+                .defaultSuccessUrl("/main/index")
                 .successHandler(successHandler())
                 .failureHandler(customFailureHandler)// 인증에 실패했을 때
 
@@ -68,6 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+        http.csrf().ignoringAntMatchers("members/**"); //csrf예외처리
     }
 
     @Bean

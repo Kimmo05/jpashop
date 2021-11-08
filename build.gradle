@@ -26,10 +26,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'com.h2database:h2'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	annotationProcessor 'org.projectlombok:lombok'
-	runtimeOnly 'com.h2database:h2'
 
 	//JUnit4 추가
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
@@ -56,18 +56,13 @@ dependencies {
 
 	//웹 크롤링
 	compile group: 'org.jsoup', name: 'jsoup', version: '1.11.3'
-
+	// 타임리프 레이아웃 추가
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 	//webp-io
 	// https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio
 	implementation group: 'org.sejda.imageio', name: 'webp-imageio', version: '0.1.1'
-	//문자열 처리 라이브러리
-	// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.8'
-	// gson 라이브러리
-	// https://mvnrepository.com/artifact/com.google.code.gson/gson
-	implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
-	// 타임리프 레이아웃 추가
-	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+	compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.6'
+	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.6'
 }
 
 test {
@@ -88,4 +83,5 @@ configurations {
 compileQuerydsl {
 	options.annotationProcessorPath = configurations.querydsl
 }
-//querydsl 추가 끝
+
+

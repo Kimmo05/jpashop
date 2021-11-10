@@ -30,7 +30,8 @@
                                     <td th:text="${member.loginId}"></td>
                                     <td th:text="${member.email}"></td>
                                     <td th:text = "${#strings.replace(member.phoneNumber, ',', '-')}"></td>
-                                    <td> <td th:text="${#temporals.format(member.regTime, 'yyyy-MM-dd')}"></td>
+                                    <td th:text="${#temporals.format(member.regTime, 'yyyy-MM-dd')}"></td>
+                                    <td>
                                     <a href="#" th:href="@{/members/{id}/edit (id=${member.id})}" class="btn btn-primary" role="button">수정</a>
                                     </td>
                                 </tr>

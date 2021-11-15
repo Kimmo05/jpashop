@@ -27,6 +27,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService implements UserDetailsService {
 
+
     private final MemberRepository memberRepository;
 
     public Member saveMember(Member member){

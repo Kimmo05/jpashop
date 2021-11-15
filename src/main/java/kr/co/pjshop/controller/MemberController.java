@@ -1,9 +1,7 @@
 package kr.co.pjshop.controller;
 
 
-import kr.co.pjshop.dto.MemberDto;
-import kr.co.pjshop.dto.MemberFormDto;
-import kr.co.pjshop.dto.MemberPageDto;
+import kr.co.pjshop.dto.*;
 import kr.co.pjshop.entity.Member;
 import kr.co.pjshop.entity.SearchMember;
 import kr.co.pjshop.service.MemberService;
@@ -15,12 +13,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
+import java.util.List;
 
 @RequestMapping("/members")
 @Controller
@@ -66,7 +63,7 @@ public class MemberController {
         return "member/memberLoginForm";
     }
 
-    @GetMapping("/admin/memberList")
+    @GetMapping("/admin/userList")
     public String pageList(Model model, @PageableDefault(size = 4) Pageable pageable, SearchMember searchMember) {
         MemberPageDto memberPageDto = new MemberPageDto();
 
@@ -89,4 +86,37 @@ public class MemberController {
         return "member/memberList";
     }
 
+    @GetMapping("/admin/userList/user/{id}")
+    public String pageUser(@PathVariable Long id, Model model) {
+        model.addAttribute("Member", memberService.findMemberById(id));
+
+        return "member/memberpage";
+    }
+
+    @ResponseBody
+    @DeleteMapping("/admin/userList/{id}")
+    public String deleteMember(@PathVariable Long id) {
+        memberService.deleteById(id);
+
+        return "회원 삭제 완료";
+    }
+
+    @ResponseBody
+    @DeleteMapping("/admin/userList")
+    public String deleteChecked(@RequestParam(value = "idList", required = false) List<Long> idList) {
+        int size = idList.size();
+
+        for (int i = 0; i < size; i++) {
+            memberService.deleteById(idList.get(i));
+        }
+        return "선택된 회원 삭제 완료";
+    }
+
+    @PutMapping("/update")
+    public String editDataPage(Principal principal, @ModelAttribute("member") ProfileDto profileDto) {
+
+        memberService.updateProfile(principal.getName(), profileDto);
+
+        return "redirect:/main/mypage";
+    }
 }

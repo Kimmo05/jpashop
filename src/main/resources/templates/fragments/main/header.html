@@ -29,6 +29,7 @@
                     <a class="nav-link" href="/members/login">로그인</a>
                 </li>
                 <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <b sec:authentication="principal.username"></b> 님 환영합니다.
                     <a class="nav-link" href="/members/logout">로그아웃</a>
                 </li>
             </ul>

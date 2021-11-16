@@ -97,6 +97,7 @@ public class MemberController {
         return "member/memberList";
     }
 
+
     @GetMapping("/admin/userList/user/{id}")
     public String pageUser(@PathVariable Long id, Model model) {
         model.addAttribute("Member", memberService.findMemberById(id));
@@ -129,5 +130,6 @@ public class MemberController {
         memberService.updateProfile(principal.getName(), profileDto);
 
         return "redirect:/main/mypage";
+
     }
 }

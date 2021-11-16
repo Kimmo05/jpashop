@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"    layout:decorate="~{layout/admin_default}">
+<th:block layout:fragment="content">
+    <div class="container">
+        <div class="row">
+                <div class="col-sm-12">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">회원 수정</h6>
+                        </div>
+                        <div class="card-body">
+                            <form role="form" action="/admin/memberList" method="post">
+                                <div class="form-group">
+                                    <label>이름</label>
+                                    <input type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label>email</label>
+                                    <input type="email">
+                                </div>
+                                <div class="form-group">
+                                    <label>휴대전화</label>
+                                    <input type="tel">
+                                </div>
+                                <div style="text-align: center">
+                                    <button type="submit" class="btn btn-primary" style="">수정</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</th:block>
+</html>

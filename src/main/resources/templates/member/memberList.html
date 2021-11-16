@@ -31,8 +31,12 @@
                                     <td th:text="${member.email}"></td>
                                     <td th:text = "${#strings.replace(member.phoneNumber, ',', '-')}"></td>
                                     <td th:text="${#temporals.format(member.regTime, 'yyyy-MM-dd')}"></td>
+<!--                                    <td>-->
+<!--                                    <a href="#" th:href="@{/members/{id}/edit (id=${member.id})}" class="btn btn-primary" role="button">수정</a>-->
+<!--                                    </td>-->
+<!--                                    수정버튼 주소 기존 href방식으로 씀-->
                                     <td>
-                                    <a href="#" th:href="@{/members/{id}/edit (id=${member.id})}" class="btn btn-primary" role="button">수정</a>
+                                        <a href="/members/admin/memberEdit" class="btn btn-primary" role="button">수정</a>
                                     </td>
                                 </tr>
                                 </tbody>

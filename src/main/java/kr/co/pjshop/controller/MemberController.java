@@ -87,4 +87,8 @@ public class MemberController {
         return "member/memberList";
     }
 
+    @GetMapping("/admin/memberEdit")
+    public String memberEdit(){
+        return "member/memberEdit";
+    }
 }

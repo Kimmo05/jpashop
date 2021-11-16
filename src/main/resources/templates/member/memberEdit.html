@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"    layout:decorate="~{layout/admin_default}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:fmt="http://www.w3.org/1999/html" layout:decorate="~{layout/admin_default}">
 <th:block layout:fragment="content">
     <div class="container">
         <div class="row">
@@ -10,21 +11,35 @@
                         </div>
                         <div class="card-body">
                             <form role="form" action="/admin/memberList" method="post">
-                                <div class="form-group">
-                                    <label>이름</label>
-                                    <input type="text">
-                                </div>
-                                <div class="form-group">
-                                    <label>email</label>
-                                    <input type="email">
-                                </div>
-                                <div class="form-group">
-                                    <label>휴대전화</label>
-                                    <input type="tel">
-                                </div>
-                                <div style="text-align: center">
-                                    <button type="submit" class="btn btn-primary" style="">수정</button>
-                                </div>
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td>이름</td>
+                                        <td><input ></td>
+                                    </tr>
+                                    <tr>
+                                        <td>아이디</td>
+                                        <td><input value="${member.loginId}" readonly="readonly"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>email</td>
+                                        <td><input value="${member.email}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>전화번호</td>
+                                        <td><input value="${member.phoneNumber}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>생성날짜</td>
+                                        <td><fmt:formDate value="${member.regTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <button type="submit" class="btn btn-primary" style="">수정</button>
+                                        </td>
+                                    </tr>
+
+                                </table>
                             </form>
                         </div>
                     </div>

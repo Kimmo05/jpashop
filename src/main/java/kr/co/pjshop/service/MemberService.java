@@ -3,6 +3,7 @@ package kr.co.pjshop.service;
 import kr.co.pjshop.constant.Role;
 import kr.co.pjshop.dto.MemberDto;
 import kr.co.pjshop.dto.MemberPageDto;
+import kr.co.pjshop.dto.ProfileDto;
 import kr.co.pjshop.entity.Member;
 import kr.co.pjshop.entity.SearchMember;
 import kr.co.pjshop.repository.MemberRepository;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,7 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 public class MemberService implements UserDetailsService {
+
 
     private final MemberRepository memberRepository;
 
@@ -93,4 +96,35 @@ public class MemberService implements UserDetailsService {
         return memberPageDto;
     }
 
+    public Member findMemberById(Long id) {
+        return memberRepository.findById(id).orElseThrow(
+                () -> new IllegalStateException("해당하는 회원이 존재하지 않습니다")
+        );
+    }
+
+    @Transactional
+    public Long deleteById(Long id) {
+        memberRepository.deleteById(id);
+        return id;
+    }
+    @Transactional
+    public void updateProfile(String loginId, ProfileDto profileDto) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        Member findMember = memberRepository.findByloginId(loginId).orElseThrow(
+                () -> new IllegalStateException("해당하는 회원을 찾을 수 없습니다")
+        );
+        findMember.setName(profileDto.getName());
+        findMember.setLoginId(profileDto.getLoginId());
+        findMember.setPassword(passwordEncoder.encode(profileDto.getPassword()));
+        findMember.setPhoneNumber(profileDto.getPhoneNumber());
+        findMember.setEmail(profileDto.getEmail());
+    }
+
+    @Transactional
+    public Long changePassword(Long id, String password) {
+        Member oneMember = findMemberById(id);
+        oneMember.setPassword(password);
+        return oneMember.getId();
+    }
 }

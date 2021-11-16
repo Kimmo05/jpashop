@@ -26,7 +26,7 @@ public class MemberFormDto {
     private String address;
 
     private String loginId;
-    @Length(max=12)
+    @Length(max=13)
     private String phoneNumber;
 
 }

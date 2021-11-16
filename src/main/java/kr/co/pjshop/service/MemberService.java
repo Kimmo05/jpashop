@@ -3,6 +3,7 @@ package kr.co.pjshop.service;
 import kr.co.pjshop.constant.Role;
 import kr.co.pjshop.dto.MemberDto;
 import kr.co.pjshop.dto.MemberPageDto;
+import kr.co.pjshop.dto.MyPageDto;
 import kr.co.pjshop.dto.ProfileDto;
 import kr.co.pjshop.entity.Member;
 import kr.co.pjshop.entity.SearchMember;
@@ -40,14 +41,14 @@ public class MemberService implements UserDetailsService {
     private void validateDuplicateMember(Member member){
         Member findMember = memberRepository.findByEmail(member.getEmail());
         if(findMember != null){
-            throw new IllegalStateException("이미 가입된 회원입니다.");
+            throw new IllegalStateException("이메일중복,이미 가입된 회원입니다.");
         }
     }
 
     private void validateDuplicateMemberId(Member member){
         Optional<Member> findMember = memberRepository.findByloginId(member.getLoginId());
         if(findMember != null){
-            throw new IllegalStateException("이미 가입된 회원입니다.");
+            throw new IllegalStateException("아이디중복,이미 가입된 회원입니다.");
         }
     }
     @Override
@@ -57,7 +58,7 @@ public class MemberService implements UserDetailsService {
         Member userEntity = userEntityWrapper.get();
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        if (("admin").equals(loginId)) { //로그인아이디가 admin@example.com이면 role이 어드민
+        if (("admin").equals(loginId)) { //로그인아이디가 admin이면 role이 어드민
             authorities.add(new SimpleGrantedAuthority(Role.ADMIN.getValue()));
             userEntity.setRole(Role.ADMIN);
         } else {
@@ -126,5 +127,19 @@ public class MemberService implements UserDetailsService {
         Member oneMember = findMemberById(id);
         oneMember.setPassword(password);
         return oneMember.getId();
+    }
+    public MyPageDto showMySimpleInfo(String loginId) {
+
+        MyPageDto myPageDto = new MyPageDto();
+
+        Member findMember = memberRepository.findByloginId(loginId).orElseThrow(
+                () -> new IllegalStateException("해당하는 회원이 존재하지 않습니다")
+        );
+
+        myPageDto.setName(findMember.getName());
+        myPageDto.setEmail(findMember.getEmail());
+        myPageDto.setPhoneNumber(findMember.getPhoneNumber());
+
+        return myPageDto;
     }
 }

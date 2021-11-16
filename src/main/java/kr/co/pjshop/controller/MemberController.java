@@ -62,6 +62,17 @@ public class MemberController {
         model.addAttribute("loginErrorMsg", "아이디 또는 비밀번호를 확인해주세요");
         return "member/memberLoginForm";
     }
+    //마이페이지
+    @GetMapping("main/mypage")
+    public String getMyPage(Principal principal, Model model) {
+        String loginId = principal.getName();
+
+        MyPageDto myPageDto = memberService.showMySimpleInfo(loginId);
+
+        model.addAttribute("member", myPageDto);
+        return "main/mypage";
+    }
+
 
     @GetMapping("/admin/userList")
     public String pageList(Model model, @PageableDefault(size = 4) Pageable pageable, SearchMember searchMember) {

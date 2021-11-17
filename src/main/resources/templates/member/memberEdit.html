@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:fmt="http://www.w3.org/1999/html" layout:decorate="~{layout/admin_default}">
+<th:block layout:fragment="content">
+    <div class="container">
+        <div class="row">
+                <div class="col-sm-12">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">회원 수정</h6>
+                        </div>
+                        <div class="card-body">
+                            <form role="form" action="/admin/memberList" method="post">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td>이름</td>
+                                        <td><input ></td>
+                                    </tr>
+                                    <tr>
+                                        <td>아이디</td>
+                                        <td><input value="${member.loginId}" readonly="readonly"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>email</td>
+                                        <td><input value="${member.email}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>전화번호</td>
+                                        <td><input value="${member.phoneNumber}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>생성날짜</td>
+                                        <td><fmt:formDate value="${member.regTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <button type="submit" class="btn btn-primary" style="">수정</button>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</th:block>
+</html>

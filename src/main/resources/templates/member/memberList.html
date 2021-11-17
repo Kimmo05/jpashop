@@ -117,6 +117,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+
                                 <tr th:each="user : ${memberList}">
                                     <td th:text="${user.id}"></td>
                                     <td th:text="${user.name}"></td>
@@ -129,6 +130,7 @@
                                     </td>
                                     <td>
                                         <input type="button" value="삭제" class="deletebtn table-btn" th:onclick="|deleteUser('${user.id}')|">
+
                                     </td>
                                     <input type="hidden" th:value="${user.id}">
                                 </tr>

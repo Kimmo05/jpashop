@@ -126,10 +126,10 @@
                                     <td th:text = "${#strings.replace(user.phoneNumber, ',', '-')}"></td>
                                     <td th:text="${#temporals.format(user.regTime, 'yyyy-MM-dd')}"></td>
                                     <td>
-                                        <input type="button" value="보기" class="userdetailbtn table-btn" th:onclick="|openUserDetail('${user.id}')|">
+                                        <input type="button" value="보기" class="btn btn-primary" th:onclick="|openUserDetail('${user.id}')|">
                                     </td>
                                     <td>
-                                        <input type="button" value="삭제" class="deletebtn table-btn" th:onclick="|deleteUser('${user.id}')|">
+                                        <input type="button" value="삭제" class="btn btn-danger" th:onclick="|deleteUser('${user.id}')|">
 
                                     </td>
                                     <input type="hidden" th:value="${user.id}">

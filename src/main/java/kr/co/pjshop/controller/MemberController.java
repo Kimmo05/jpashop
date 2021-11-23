@@ -31,14 +31,14 @@ public class MemberController {
     @GetMapping(value = "/new")
     public String memberForm(Model model){
         model.addAttribute("memberFormDto", new MemberFormDto());
-        return "member/memberForm";
+        return "member/memberLoginForm";
     }
 
     @PostMapping(value = "/new")
     public String newMember(@Valid MemberFormDto memberFormDto, BindingResult bindingResult, Model model){
 
         if(bindingResult.hasErrors()){
-            return "member/memberForm";
+            return "member/memberLoginForm";
         }
 
         try {
@@ -46,7 +46,7 @@ public class MemberController {
             memberService.saveMember(member);
         } catch (IllegalStateException e){
             model.addAttribute("errorMessage", e.getMessage());
-            return "member/memberForm";
+            return "member/memberLoginForm";
         }
 
         return "redirect:/";

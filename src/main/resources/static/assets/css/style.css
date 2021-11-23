@@ -902,7 +902,7 @@ ul {
 }
 
 .pt-150 {
-  padding-top: 150px;
+  padding-top: 78px;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -918,12 +918,12 @@ ul {
 }
 
 .pt-155 {
-  padding-top: 155px;
+  padding-top: 78px;
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   .pt-155 {
-    padding-top: 95px;
+    padding-top: 78px;
   }
 }
 
@@ -3712,7 +3712,7 @@ textarea:focus {
 }
 
 .header-action-wrap .same-style a {
-  font-size: 20px;
+  font-size: 25px;
   color: #0A1039;
 }
 
@@ -5014,7 +5014,39 @@ textarea:focus {
 .header-search-3 .search-toggle.open .s-open {
   opacity: 0;
 }
+/******/
+.header-admin-3 {
+    position: relative;
+}
 
+.header-admin-3 .search-toggle {
+    z-index: 99;
+}
+
+.header-admin-3 .search-toggle i {
+    display: block;
+}
+
+.header-admin-3 .search-toggle i.s-close {
+    left: 0;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.header-admin-3 .search-toggle .s-close {
+    opacity: 0;
+}
+
+.header-admin-3 .search-toggle.open .s-close {
+    opacity: 1;
+}
+
+.header-admin-3 .search-toggle.open .s-open {
+    opacity: 0;
+}
 .search-wrap-3 {
   background-color: transparent;
   opacity: 0;
@@ -7501,12 +7533,12 @@ textarea:focus {
 }
 
 .slider-mt-7, .breadcrumb-mt {
-  margin-top: 102px;
+  margin-top: 50px;
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   .slider-mt-7, .breadcrumb-mt {
-    margin-top: 174px;
+    margin-top: 40px;
   }
 }
 
@@ -29043,7 +29075,7 @@ textarea:focus {
 }
 
 .breadcrumb-ptb-2 {
-  padding: 113px 0 110px;
+  padding: 74px 0 110px;
 }
 
 @media only screen and (max-width: 767px) {

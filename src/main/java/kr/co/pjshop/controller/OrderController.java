@@ -42,11 +42,11 @@ public class OrderController {
             return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
         }
 
-        String email = principal.getName();
+        String loginId = principal.getName();
         Long orderId;
 
         try {
-            orderId = orderService.order(orderDto, email);
+            orderId = orderService.order(orderDto, loginId);
         } catch(Exception e){
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

@@ -1,50 +1,190 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:fmt="http://www.w3.org/1999/html" layout:decorate="~{layout/admin_default}">
-<th:block layout:fragment="content">
-    <div class="container">
-        <div class="row">
-                <div class="col-sm-12">
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-primary">회원 수정</h6>
-                        </div>
-                        <div class="card-body">
-                            <form role="form" action="/admin/memberList" method="post">
-                                <table class="table table-bordered">
-                                    <tr>
-                                        <td>이름</td>
-                                        <td><input ></td>
-                                    </tr>
-                                    <tr>
-                                        <td>아이디</td>
-                                        <td><input value="${member.loginId}" readonly="readonly"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>email</td>
-                                        <td><input value="${member.email}"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>전화번호</td>
-                                        <td><input value="${member.phoneNumber}"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>생성날짜</td>
-                                        <td><fmt:formDate value="${member.regTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td>
-                                            <button type="submit" class="btn btn-primary" style="">수정</button>
-                                        </td>
-                                    </tr>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      lang="en">
+<head >
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
 
-                                </table>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+    <!-- Custom styles for this template-->
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!--    <link rel="stylesheet" href="/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
+    <!-- Custom styles for this template -->
+    <link href="/css/jumbotron-narrow.css" rel="stylesheet">
+    <title>Hello, world!</title>
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="/vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="/js/demo/chart-area-demo.js"></script>
+    <script src="/js/demo/chart-pie-demo.js"></script>
+</head>
+<body>
+<script th:inline="javascript">
+    function inputPhoneNumber(obj) {
+        var number = obj.value.replace(/[^0-9]/g, "");
+        var phone = "";
+
+        if(number.length < 4) {
+            return number;
+        } else if(number.length < 7) {
+            phone += number.substr(0, 3);
+            phone += "-";
+            phone += number.substr(3);
+        } else if(number.length < 11) {
+            phone += number.substr(0, 3);
+            phone += "-";
+            phone += number.substr(3, 3);
+            phone += "-";
+            phone += number.substr(6);
+        } else {
+            phone += number.substr(0, 3);
+            phone += "-";
+            phone += number.substr(3, 4);
+            phone += "-";
+            phone += number.substr(7);
+        }
+        obj.value = phone;
+    }
+    function sendit(){
+        //alert("sendit호출");
+        if($('#user_id').val() == ""){
+            alert("아이디는 필수 입력값입니다.");
+            $('#user_id').focus();
+            return false;
+        }
+
+        if($('#user_password').val() == ""){
+            alert("비밀번호는 필수 입력값입니다.");
+            $('#user_password').focus();
+            return false;
+        }
+
+        if($('#user_name').val() == ""){
+            alert("이름은 필수 입력값입니다.");
+            $('#user_name').focus();
+            return false;
+        }
+
+        if($('#sample6_postcode').val() == ""){
+            alert("주소 항목은 필수 입력값입니다.");
+            $('#sample6_postcode').focus();
+            return false;
+        }
+        // //정규식
+        // const exppw1 = /^(?=.*[a-zA-Z])(?=.*[0-9]).{10,16}$/; //영문, 숫자
+        // const exppw2 = /^(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{10,16}$/; //영문, 특수문자
+        // const exppw3 = /^(?=.*[^a-zA-Z0-9])(?=.*[0-9]).{10,16}$/; //특수문자, 숫자
+        // const user_pw = $('#user_password').val();
+        //
+        // if(!(exppw1.test(user_pw) || exppw2.test(user_pw) || exppw3.test(user_pw))){
+        //     alert("비밀번호 입력조건을 다시한번 확인해 주세요.");
+        //     $('#user_password').val('');
+        //     $('#user_password_ok').val('');
+        //     $('#user_password').focus();
+        //     return false
+        // }
+        // if($('#flag').val() == 'false'){
+        //     alert('아이디 중복확인을 해주세요')
+        //     return false
+        // }
+
+    }
+    $(function(){
+        //로그인 되어있는 경우면 인덱스로 튕겨내기
+        if($('#loginTrue').val() == 'loginTrue'){
+            location.href = '/';
+        }
+
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        //아이디 중복확인 ajax
+        $('#double_check').on('click', function(){
+            $.ajax({
+                type: 'POST',
+                url: '/doublecheck',
+                data: {registerId : $('#user_id').val()},
+                beforeSend : function(xhr)
+                {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                    xhr.setRequestHeader(header, token);
+                }
+            }).done(function(word){
+                $('#flag').val('true');
+                alert(word);
+            }).fail(function (error){
+                alert(JSON.stringify(error));
+            })
+
+        })
+        $('#user_id').on('change', function(){
+            $('#flag').val('false');
+        })
+
+    })
+
+    $(document).ready(function(){
+        var errorMessage = [[${errorMessage}]];
+        if(errorMessage != null){
+            alert(errorMessage);
+        }
+    });
+</script>
+<div class="container">
+    <input type="hidden" sec:authorize="isAuthenticated()" value="loginTrue" id="loginTrue">
+    <div th:replace="fragments/main/header :: header"/>
+    <form action="/members/new" role="form" method="post"  th:object="${memberFormDto}" onsubmit="return sendit()">
+        <div class="login_caption">LOGIN PAGE</div>
+        <div class="form-group">
+            <label th:for="name">이름</label>
+            <input type="text" th:field="*{name}" class="form-control" placeholder="이름을 입력해주세요">
+            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fieldError">Incorrect data</p>
         </div>
-    </div>
-</th:block>
+        <div class="form-group">
+            <label th:for="user_id">아이디</label>
+            <input type="text"name="loginId" id="user_id" class="form-control">
+            <!--            <button type="button" id="double_check" class="btn btn-primary">중복확인 </button>-->
+        </div>
+        <div class="form-group">
+            <label th:for="email">이메일주소</label>
+            <input type="email" th:field="*{email}" class="form-control" placeholder="이메일을 입력해주세요">
+            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError">Incorrect data</p>
+        </div>
+        <div class="form-group">
+            <label th:for="password">비밀번호</label>
+            <input type="password" th:field="*{password}" class="form-control" placeholder="비밀번호 입력">
+            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError">Incorrect data</p>
+        </div>
+        <div class="form-group">
+            <label th:for="address">주소</label>
+            <input type="text" th:field="*{address}" class="form-control" placeholder="주소를 입력해주세요">
+            <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="fieldError">Incorrect data</p>
+        </div>
+
+        <div class="form-group">
+            <label th:for="phone_number">휴대전화<span>＊</span></label>
+            <input type="text" onKeyup="inputPhoneNumber(this);" maxlength="13"
+                   name="phoneNumber" class="form-control" id="phone_number" />
+        </div>
+        <div style="text-align: center">
+            <button type="submit" class="btn btn-primary" style="">Submit</button>
+        </div>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+    </form>
+    <div th:replace="fragments/main/footer :: footer" />
+</div>
+
+</body>
 </html>

@@ -81,21 +81,114 @@
 
     </script>
 </th:block>
+<th:block layout:fragment="css">
+    <style>
+        /*select 태그*/
+        .boxList {
+            display: flex;
+            grid-gap: 10px;
+        }
+        body {
+            background: #eee;
+        }
+
+        select::-ms-expand {
+            display: none;
+        }
+
+        select {
+            -o-appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .select {
+            width: 100px;
+            height: 35px;
+            background: url('https://freepikpsd.com/media/2019/10/down-arrow-icon-png-7-Transparent-Images.png') calc(100% - 5px) center no-repeat;
+            background-size: 20px;
+            padding: 5px 30px 5px 10px;
+            border-radius: 4px;
+            outline: 0 none;
+        }
+        .select option {
+            background: black;
+            color: #fff;
+            padding: 3px 0;
+        }
+        .select option:hover {
+            background: #6885DEFF
+        }
+        .selectBox {
+            position: relative;
+            width: 100px;
+            height: 40px;
+            border-radius: 2px;
+            border: 1px solid #495057;
+        }
+        .selectBox .select {
+            width: inherit;
+            height: inherit;
+            background: transparent;
+            border: 0 none;
+            outline: 0 none;
+            padding: 0 5px;
+            position: relative;
+            z-index: 3;
+        }
+        .selectBox .select option {
+            background: #4e73df;
+            color: #fff;
+            padding: 3px 0;
+            font-size: 16px;
+        }
+        .selectBox:after{
+            content: '▼';
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 1;
+            width: 35px;
+            height: 100%;
+            border-left: 1px solid #495057;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+    </style>
+</th:block>
 <th:block layout:fragment="content">
         <div class="container">
     <div class="card shadow mb-4">
 
         <div class="card-header">
             <form class= "search-form" id="search-form" method="GET" th:action="@{/admin/userList}">
-                <select name="searchCondition" class="search-mode search-item" form="search-form">
-                    <option value="userid">아이디</option>
-                    <option value="username">이름</option>
-                    <!--            <option value="phone">휴대전화</option>-->
-                    <!--            <option value="visit">방문횟수</option>-->
-                    <!--            <option value="order">주문횟수</option>-->
-                </select>
-                <input type="text" name="searchKeyword" class="search-input search-item">
-                <input type="submit" class="search-submit search-item" value="검색">
+                <div class="boxList">
+                    <div class="selectBox">
+                        <select name="searchCondition" class="select" form="search-form">
+                            <option value="userid">아이디</option>
+                            <option value="username">이름</option>
+                            <!--            <option value="phone">휴대전화</option>-->
+                            <!--            <option value="visit">방문횟수</option>-->
+                            <!--            <option value="order">주문횟수</option>-->
+                        </select>
+                    </div>
+
+<!--                    <div>-->
+<!--                        <input type="text" name="searchKeyword" class="search-input search-item">-->
+<!--                        <input type="submit" class="search-submit search-item" value="검색">-->
+<!--                    </div>-->
+                    <div class="input-group">
+                        <input type="text" class="textBox " placeholder="Search for...">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-search fa-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </form>
         총 <b class="num-searched"><span th:text="${memberList.totalElements}"></span></b> 명의 회원이 검색되었습니다
         </div>

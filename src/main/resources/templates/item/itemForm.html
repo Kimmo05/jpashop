@@ -32,13 +32,214 @@
                     .forEach(el => el.checked = false);
                 target.checked = true;
             }
+
+            // 이미지저장
+            // $(document).ready(function(){
+            //     var errorMessage = [[${errorMessage}]];
+            //     if(errorMessage != null){
+            //         alert(errorMessage);
+            //     }
+            //
+            //     bindDomEvent();
+            //
+            // });
+            //
+            // function bindDomEvent(){
+            //     $(".custom-file-input").on("change", function() {
+            //         var fileName = $(this).val().split("\\").pop();  //이미지 파일명
+            //         var fileExt = fileName.substring(fileName.lastIndexOf(".")+1); // 확장자 추출
+            //         fileExt = fileExt.toLowerCase(); //소문자 변환
+            //
+            //         if(fileExt != "jpg" && fileExt != "jpeg" && fileExt != "gif" && fileExt != "png" && fileExt != "bmp"){
+            //             alert("이미지 파일만 등록이 가능합니다.");
+            //             return;
+            //         }
+            //
+            //         $(this).siblings(".custom-file-label").html(fileName);
+            //     });
+            // }
+
         </script>
+    </th:block>
+
+    <th:block layout:fragment="css">
+        <style>
+            /*select 태그*/
+            .selectBoxList {
+                display: flex;
+                grid-gap: 60px;
+            }
+            body {
+                background: #eee;
+            }
+
+            select::-ms-expand {
+                display: none;
+            }
+
+            select {
+                -o-appearance: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+            }
+
+            .select {
+                width: 170px;
+                height: 35px;
+                background: url('https://freepikpsd.com/media/2019/10/down-arrow-icon-png-7-Transparent-Images.png') calc(100% - 5px) center no-repeat;
+                background-size: 20px;
+                padding: 5px 30px 5px 10px;
+                border-radius: 4px;
+                outline: 0 none;
+            }
+            .select option {
+                background: black;
+                color: #fff;
+                padding: 3px 0;
+            }
+            .selectBox {
+                position: relative;
+                width: 170px;
+                height: 35px;
+                border-radius: 5px;
+                border: 1px solid #4e73df;
+            }
+            .selectBox .select {
+                width: inherit;
+                height: inherit;
+                background: transparent;
+                border: 0 none;
+                outline: 0 none;
+                padding: 0 5px;
+                position: relative;
+                z-index: 3;
+            }
+            .selectBox .select option {
+                background: #4e73df;
+                color: #fff;
+                padding: 3px 0;
+                font-size: 16px;
+            }
+            .selectBox:after{
+                content: '▼';
+                position: absolute;
+                top: 0;
+                right: 0;
+                z-index: 1;
+                width: 35px;
+                height: 100%;
+                border-left: 1px solid #4e73df;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+
+
+            /*input file태그*/
+            .box-file-input label{
+                display:inline-block;
+                background:#4e73df;
+                border-color: #4e73df;
+                color:#fff;
+                padding:0px 15px;
+                line-height:35px;
+                cursor:pointer;
+            }
+
+            /*텍스트박스*/
+            .textBox {
+                position: relative;
+                width: 400px;
+                height: 35px;
+                border-radius: 5px;
+                border: 1px solid #4e73df;
+            }
+
+            /*이미지 불러오기*/
+            /*body {margin: 10px}*/
+            /*.where {*/
+            /*    display: block;*/
+            /*    margin: 25px 15px;*/
+            /*    font-size: 11px;*/
+            /*    color: #000;*/
+            /*    text-decoration: none;*/
+            /*    font-family: verdana;*/
+            /*    font-style: italic;*/
+            /*}*/
+
+            .filebox input[type="file"] {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                padding: 0;
+                margin: -1px;
+                overflow: hidden;
+                clip:rect(0,0,0,0);
+                border: 0;
+            }
+
+            .filebox label {
+                display: inline-block;
+                padding: .5em .75em;
+                color: #999;
+                font-size: inherit;
+                line-height: normal;
+                vertical-align: middle;
+                background-color: #fdfdfd;
+                cursor: pointer;
+                border: 1px solid #ebebeb;
+                border-bottom-color: #e2e2e2;
+                border-radius: 5px;
+            }
+
+            /* named upload */
+            .filebox .upload-name {
+                display: inline-block;
+                padding: .5em .75em;
+                font-size: inherit;
+                font-family: inherit;
+                line-height: normal;
+                vertical-align: middle;
+                background-color: #f5f5f5;
+                border: 1px solid #ebebeb;
+                border-bottom-color: #e2e2e2;
+                border-radius: .25em;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+            }
+
+            .filebox.bs3-primary label {
+                color: #fff;
+                background-color: #4e73df;
+                border-color: #4e73df;
+            }
+
+            /*----------------------------------*/
+            .file_input_textbox{float:left}
+
+            .file_input_div{position:relative;width:100px;height:23px;overflow:hidden;}
+
+            .file_input_button{width:100px;position:absolute; top:0px; background-color:#aaa; color:#fff; border-style:solid;}
+
+            .file_input_hidden{font-size:45px; position:absolute; right:0px; top:0px; opacity:0;
+
+                filter:alpha(opacity=0);
+
+                -ms-filter:"alpha(opacity=0)";
+
+                -khtml-opacity:0;
+
+                -moz-opacity:0;}
+        </style>
     </th:block>
     <div layout:fragment="content">
         <div class="container">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">상품 정보 등록</h6>
+                    <h5 class="m-0 font-weight-bold text-primary">상품 정보 등록</h5>
                 </div>
                 <div class="card-body">
                     <form role="form" method="post" enctype="multipart/form-data" th:object="${itemFormDto}">
@@ -48,18 +249,21 @@
                                     <label>상품분류</label>
                                 </td>
                                 <td width="50">
-                                    <select id="1" onchange="change(this)">
-                                        <option>1차분류</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                    </select>
-                                    &nbsp;
-                                    &nbsp;
-                                    &nbsp;
-                                    <select id="2">
-                                        <option>2차분류</option>
-                                    </select>
+                                    <div class="selectBoxList">
+                                    <div class="selectBox">
+                                        <select class="select" id="1" onchange="change(this)">
+                                            <option disabled selected class="">1차분류</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                        </select>
+                                    </div>
+                                    <div class="selectBox">
+                                        <select class="select" id="2">
+                                            <option>2차분류</option>
+                                        </select>
+                                    </div>
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
@@ -67,7 +271,7 @@
                                     <label>상품명</label>
                                 </td>
                                 <td width="50">
-                                    <input type="text" placeholder="상품명을 입력해주세요">
+                                    <input class="textBox" type="text" placeholder="상품명을 입력해주세요">
                                 </td>
                             </tr>
                             <tr>
@@ -75,7 +279,7 @@
                                     <label>판매가격</label>
                                 </td>
                                 <td width="50">
-                                    <input type="number" placeholder="가격을 입력해주세요">
+                                    <input  class="textBox" type="number" placeholder="가격을 입력해주세요">
                                 </td>
                             </tr>
                             <tr>
@@ -83,7 +287,7 @@
                                     <label>재고수량</label>
                                 </td>
                                 <td>
-                                    <input type="number" placeholder="재고수량">
+                                    <input  class="textBox" type="number" placeholder="재고수량">
                                 </td>
                             </tr>
                             <tr>
@@ -91,9 +295,40 @@
                                     <label>상품 이미지</label>
                                 </td>
                                 <td width="50">
-                                    <input type="file">
+                                    <div class="filebox bs3-primary">
+                                        <input type="text" id="fileName" class="upload-name" value="파일선택" readonly="readonly">
+                                        <label for="ex_filename">업로드</label>
+                                        <input type="file" id="ex_filename" class="upload-hidden" onchange="javascript:document.getElementById('fileName').value = this.value.split('\\')[this.value.split('\\').length-1]">
+                                    </div>
+
+
                                 </td>
                             </tr>
+<!--                            <tr>-->
+<!--                                <td width="50">-->
+<!--                                    <label>상품 이미지</label>-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <div th:if="${#lists.isEmpty(itemFormDto.itemImgDtoList)}">-->
+<!--                                        <div class="form-group" th:each="num: ${#numbers.sequence(1,5)}">-->
+<!--                                            <div class="custom-file img-div">-->
+<!--                                                <input type="file" class="custom-file-input" name="itemImgFile">-->
+<!--                                                <label class="custom-file-label" th:text="상품이미지 + ${num}"></label>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+
+<!--                                    <div th:if = "${not #lists.isEmpty(itemFormDto.itemImgDtoList)}">-->
+<!--                                        <div class="form-group" th:each="itemImgDto, status: ${itemFormDto.itemImgDtoList}">-->
+<!--                                            <div class="custom-file img-div">-->
+<!--                                                <input type="file" class="custom-file-input" name="itemImgFile">-->
+<!--                                                <input type="hidden" name="itemImgIds" th:value="${itemImgDto.id}">-->
+<!--                                                <label class="custom-file-label" th:text="${not #strings.isEmpty(itemImgDto.oriImgName)} ? ${itemImgDto.oriImgName} : '상품이미지' + ${status.index+1}"></label>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                            </tr>-->
                             <tr>
                                 <td width="50">
                                     <label>판매상태</label>
@@ -109,7 +344,7 @@
                                     <label>INFO</label>
                                 </td>
                                 <td width="50">
-                                    <input type="text" style="width: 500px; height: 50px">
+                                   <textarea class="textBox" aria-label="With textarea" style="width: 400px; height: 100px"></textarea>
                                 </td>
                             </tr>
                         </table>

@@ -1,5 +1,6 @@
 package kr.co.pjshop.entity;
 
+
 import kr.co.pjshop.constant.ItemSellStatus;
 import kr.co.pjshop.dto.ItemFormDto;
 import kr.co.pjshop.exception.OutOfStockException;
@@ -8,7 +9,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-
 
 @Entity
 @Table(name="item")
@@ -37,7 +37,7 @@ public class Item extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private ItemSellStatus itemSellStatus; //상품 판매 상태
-
+    private boolean rep;
     public void updateItem(ItemFormDto itemFormDto){
         this.itemNm = itemFormDto.getItemNm();
         this.price = itemFormDto.getPrice();

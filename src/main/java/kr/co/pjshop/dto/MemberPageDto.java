@@ -1,6 +1,5 @@
 package kr.co.pjshop.dto;
 
-
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.domain.Page;

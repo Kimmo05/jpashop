@@ -26,6 +26,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ItemController {
 
+
     private final ItemService itemService;
 
     @GetMapping(value = "/admin/item/new")
@@ -54,7 +55,7 @@ public class ItemController {
             return "item/itemForm";
         }
 
-        return "redirect:admin/items";
+        return "redirect:/";
     }
 
     @GetMapping(value = "/admin/item/{itemId}")
@@ -113,5 +114,7 @@ public class ItemController {
         model.addAttribute("item", itemFormDto);
         return "item/itemDtl";
     }
+
+
 
 }

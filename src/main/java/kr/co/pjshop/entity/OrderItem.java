@@ -1,7 +1,9 @@
 package kr.co.pjshop.entity;
 
+import kr.co.pjshop.constant.OrderStatus;
 import lombok.Getter;
 import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
@@ -24,6 +26,9 @@ public class OrderItem extends BaseEntity {
 
     private int count; //수량
 
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
+
     public static OrderItem createOrderItem(Item item, int count){
         OrderItem orderItem = new OrderItem();
         orderItem.setItem(item);
@@ -32,7 +37,6 @@ public class OrderItem extends BaseEntity {
         item.removeStock(count);
         return orderItem;
     }
-
     public int getTotalPrice(){
         return orderPrice*count;
     }

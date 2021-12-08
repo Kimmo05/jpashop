@@ -1,37 +1,29 @@
 package kr.co.pjshop.config;
 
-import kr.co.pjshop.service.MemberService;
-import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
+import kr.co.pjshop.service.MemberServiceImpl;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    MemberService memberService;
+    private final AuthenticationFailureHandler customFailureHandler;
+
+    private final MemberServiceImpl memberServiceImpl;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -39,16 +31,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/members/login")
                 .defaultSuccessUrl("/")
                 .usernameParameter("loginId")
-                .failureUrl("/members/login/error")
+                .successHandler(successHandler())
+                .failureHandler(customFailureHandler)
+//                .failureUrl("/members/login/error")
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"))
-               .logoutSuccessUrl("/");
-
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true)
+                .and()
+                // 403 예외처리 핸들링
+                .exceptionHandling().accessDeniedPage("/main/restrict");
+        ;
 
         http.authorizeRequests()
-                .antMatchers("/","/login", "/error", "/members/login/error").permitAll()
-                .mvcMatchers("/", "/members/**", "/item/**", "/images/**","/cart/**").permitAll()
+                .antMatchers("/favicon.ico", "/resources/**", "/error").permitAll()
+                .mvcMatchers("/", "/members/**", "/item/**", "/images/**").permitAll()
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
         ;
@@ -58,6 +56,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         ;
     }
 
+    private AuthenticationSuccessHandler successHandler() {
+        return new CustomLoginSuccessHandler("/defaultUrl");
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -65,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(memberService)
+        auth.userDetailsService(memberServiceImpl)
                 .passwordEncoder(passwordEncoder());
     }
 
@@ -73,5 +75,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/css/**", "/js/**", "/images/**","/vendor/**","/assets/**");
     }
+
 
 }

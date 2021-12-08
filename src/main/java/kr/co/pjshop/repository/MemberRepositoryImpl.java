@@ -34,6 +34,8 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
                         QMember.member.email,
                         QMember.member.role,
                         QMember.member.phoneNumber,
+                        QMember.member.visitCount,
+                        QMember.member.orderCount,
                         QMember.member.regTime
                 ))
                 .from(QMember.member)
@@ -61,6 +63,8 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
                             QMember.member.email,
                             QMember.member.role,
                             QMember.member.phoneNumber,
+                            QMember.member.visitCount,
+                            QMember.member.orderCount,
                             QMember.member.regTime
                     ))
                     .from(QMember.member)
@@ -71,12 +75,15 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
                     .fetchResults();
         } else if (search.getSearchCondition().equals("username")) {
             results = queryFactory
-                    .select(new QMemberDto( QMember.member.id,
+                    .select(new QMemberDto(
+                            QMember.member.id,
                             QMember.member.name,
                             QMember.member.loginId,
                             QMember.member.email,
                             QMember.member.role,
                             QMember.member.phoneNumber,
+                            QMember.member.visitCount,
+                            QMember.member.orderCount,
                             QMember.member.regTime
                     ))
                     .from(QMember.member)
@@ -99,7 +106,6 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
         }
         return QMember.member.loginId.likeIgnoreCase("%" + loginIdCondition + "%");
     }
-
     private BooleanExpression nameEq(String nameCondition) {
         if (StringUtils.isEmpty(nameCondition)) {
             return null;

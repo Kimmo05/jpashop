@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/admin_default}">
+      layout:decorate="~{layouts/admin_default}">
 
 <!-- 사용자 스크립트 추가 -->
 <th:block layout:fragment="script">
@@ -57,7 +57,6 @@
                 <td>
                     <a th:href="'/admin/item/'+${item.id}" th:text="${item.itemNm}"></a>
                 </td>
-                <!--/*@thymesVar id="shop" type=""*/-->
                 <td th:text="${item.itemSellStatus == T(kr.co.pjshop.constant.ItemSellStatus).SELL} ? '판매중' : '품절'"></td>
                 <td th:text="${item.createdBy}"></td>
                 <td th:text="${item.regTime}"></td>

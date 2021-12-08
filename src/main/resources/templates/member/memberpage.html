@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"    layout:decorate="~{layout/admin_default}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin_default}">
 
 <th:block layout:fragment="content">
 <div class="container">
@@ -22,16 +23,8 @@
                                         <td th:text="${Member.name}"></td>
                                     </tr>
                                     <tr>
-                                        <td class="bg-light">ID</td>
-                                        <td th:text="${Member.loginId}"></td>
-                                    </tr>
-                                    <tr>
                                         <td class="bg-light">Email</td>
                                         <td th:text="${Member.email}"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="bg-light">Tel</td>
-                                        <td th:text = "${#strings.replace(Member.phoneNumber, ',', '-')}"></td>
                                     </tr>
                                     <tr>
                                         <td class="bg-light">생성날짜</td>

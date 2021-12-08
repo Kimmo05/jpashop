@@ -1,43 +1,40 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">>
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/mainlayout}">
 
-<head th:replace="fragments/main/head :: head">
-    <!-- Required meta tags -->
-<!--    <meta charset="utf-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
-<!--    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">-->
-<!--    <link-->
-<!--            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"-->
-<!--            rel="stylesheet">-->
+<!-- 사용자 CSS 추가 -->
+<th:block layout:fragment="css">
+    <style>
+        .carousel-inner > .item {
+            height: 350px;
+        }
+        .margin{
+            margin-bottom:30px;
+        }
+        .banner{
+            height: 300px;
+            position: absolute; top:0; left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .card-text{
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        a:hover{
+            text-decoration:none;
+        }
+        .center{
+            text-align:center;
+        }
+    </style>
+</th:block>
 
-<!--    &lt;!&ndash; Custom styles for this template&ndash;&gt;-->
-<!--    <link href="/css/sb-admin-2.min.css" rel="stylesheet">-->
-<!--    &lt;!&ndash; Bootstrap CSS &ndash;&gt;-->
-<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">-->
-<!--    &lt;!&ndash;    <link rel="stylesheet" href="/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">&ndash;&gt;-->
-<!--    &lt;!&ndash; Custom styles for this template &ndash;&gt;-->
-<!--    <link href="/css/jumbotron-narrow.css" rel="stylesheet">-->
-<!--    <title>Hello, world!</title>-->
-<!--    <script src="/vendor/jquery/jquery.min.js"></script>-->
-<!--    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>-->
+<div layout:fragment="content">
 
-<!--    &lt;!&ndash; Core plugin JavaScript&ndash;&gt;-->
-<!--    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>-->
-
-<!--    &lt;!&ndash; Custom scripts for all pages&ndash;&gt;-->
-<!--    <script src="/js/sb-admin-2.min.js"></script>-->
-
-<!--    &lt;!&ndash; Page level plugins &ndash;&gt;-->
-<!--    <script src="/vendor/chart.js/Chart.min.js"></script>-->
-
-<!--    &lt;!&ndash; Page level custom scripts &ndash;&gt;-->
-<!--    <script src="/js/demo/chart-area-demo.js"></script>-->
-<!--    <script src="/js/demo/chart-pie-demo.js"></script>-->
-</head>
-
-<body>
-    <div th:replace="fragments/main/header :: header" />
     <div class="slider-area section-padding-8">
         <div class="container-fluid">
             <div class="slider-active-4 nav-style-1 dot-style-4">
@@ -93,75 +90,6 @@
                     </div>
                     <div class="furniture-slider-shape-3"></div>
                     <div class="furniture-slider-shape-4"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="categorie-area pt-155">
-        <div class="container">
-            <div class="section-title-6 mb-65 text-center">
-                <h2>Shop By Categories</h2>
-            </div>
-            <div class="row no-gutters">
-                <div class="col-lg-2 col-md-4 col-sm-6 col-12">
-                    <div class="single-categories-5 text-center">
-                        <div class="single-categories-5-img">
-                            <a href="shop.html"><img class="inject-me" src="/assets/images/icon-img/furniture-book.svg" alt=""></a>
-                        </div>
-                        <div class="categorie-content-6">
-                            <h4><a href="#">Book Self</a></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-6 col-12">
-                    <div class="single-categories-5 text-center">
-                        <div class="single-categories-5-img">
-                            <a href="shop.html"><img class="inject-me" src="assets/images/icon-img/furniture-dress.svg" alt=""></a>
-                        </div>
-                        <div class="categorie-content-6">
-                            <h4><a href="#">Dress</a></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-6 col-12">
-                    <div class="single-categories-5 text-center">
-                        <div class="single-categories-5-img">
-                            <a href="shop.html"><img class="inject-me" src="assets/images/icon-img/furniture-headphone.svg" alt=""></a>
-                        </div>
-                        <div class="categorie-content-6">
-                            <h4><a href="#">headphone</a></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-6 col-12">
-                    <div class="single-categories-5 text-center">
-                        <div class="single-categories-5-img">
-                            <a href="shop.html"><img class="inject-me" src="assets/images/icon-img/furniture-chair.svg" alt=""></a>
-                        </div>
-                        <div class="categorie-content-6">
-                            <h4><a href="#">Chair</a></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-6 col-12">
-                    <div class="single-categories-5 text-center">
-                        <div class="single-categories-5-img">
-                            <a href="shop.html"><img class="inject-me" src="assets/images/icon-img/furniture-chair-2.svg" alt=""></a>
-                        </div>
-                        <div class="categorie-content-6">
-                            <h4><a href="#">Chair</a></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-6 col-12">
-                    <div class="single-categories-5 text-center">
-                        <div class="single-categories-5-img">
-                            <a href="shop.html"><img class="inject-me" src="assets/images/icon-img/furniture-chair-2.svg" alt=""></a>
-                        </div>
-                        <div class="categorie-content-6">
-                            <h4><a href="#">Chair</a></h4>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -301,7 +229,7 @@
                                         <span class="old-price">$ 130</span>
                                     </div>
                                 </div>
-                                <div class="product-action-position-1 text-center">
+                                <div class="product-action-position-1 text-center" >
                                     <div class="product-content">
                                         <h4><a href="product-details.html">Product Title</a></h4>
                                         <div class="product-price">
@@ -320,18 +248,19 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6">
+
+                        <div class="col-lg-3 col-md-6 col-sm-6" th:each="item, status: ${items.getContent()}">
                             <div class="product-wrap mb-45">
                                 <div class="product-img product-img-zoom mb-25">
-                                    <a href="product-details.html">
-                                        <img src="assets/images/product/product-96.jpg" alt="">
+                                    <a th:href="'/item/' +${item.id}">
+                                        <img  th:src="${item.imgUrl}"  alt="" th:alt="${item.itemNm}">
                                     </a>
                                 </div>
                                 <div class="product-content">
-                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <h4><a href="product-details.html">[[${item.itemNm}]]</a></h4>
                                     <div class="product-price">
-                                        <span>$ 124</span>
-                                        <span class="old-price">$ 130</span>
+                                        <span>[[${item.itemDetail}]]</span>
+                                        <span class="old-price">[[${item.price}]]원</span>
                                     </div>
                                 </div>
                                 <div class="product-action-position-1 text-center">
@@ -344,172 +273,7 @@
                                     </div>
                                     <div class="product-action-wrap">
                                         <div class="product-action-cart">
-                                            <button title="Add to Cart">Add to cart</button>
-                                        </div>
-                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
-                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
-                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="product-wrap mb-45">
-                                <div class="product-img product-img-zoom mb-25">
-                                    <a href="product-details.html">
-                                        <img src="assets/images/product/product-97.jpg" alt="">
-                                    </a>
-                                </div>
-                                <div class="product-content">
-                                    <h4><a href="product-details.html">Product Title</a></h4>
-                                    <div class="product-price">
-                                        <span>$ 124</span>
-                                        <span class="old-price">$ 130</span>
-                                    </div>
-                                </div>
-                                <div class="product-action-position-1 text-center">
-                                    <div class="product-content">
-                                        <h4><a href="product-details.html">Product Title</a></h4>
-                                        <div class="product-price">
-                                            <span>$ 124</span>
-                                            <span class="old-price">$ 130</span>
-                                        </div>
-                                    </div>
-                                    <div class="product-action-wrap">
-                                        <div class="product-action-cart">
-                                            <button title="Add to Cart">Add to cart</button>
-                                        </div>
-                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
-                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
-                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="product-wrap mb-45">
-                                <div class="product-img product-img-zoom mb-25">
-                                    <a href="product-details.html">
-                                        <img src="assets/images/product/product-98.jpg" alt="">
-                                    </a>
-                                </div>
-                                <div class="product-content">
-                                    <h4><a href="product-details.html">Product Title</a></h4>
-                                    <div class="product-price">
-                                        <span>$ 124</span>
-                                        <span class="old-price">$ 130</span>
-                                    </div>
-                                </div>
-                                <div class="product-action-position-1 text-center">
-                                    <div class="product-content">
-                                        <h4><a href="product-details.html">Product Title</a></h4>
-                                        <div class="product-price">
-                                            <span>$ 124</span>
-                                            <span class="old-price">$ 130</span>
-                                        </div>
-                                    </div>
-                                    <div class="product-action-wrap">
-                                        <div class="product-action-cart">
-                                            <button title="Add to Cart">Add to cart</button>
-                                        </div>
-                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
-                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
-                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="product-wrap mb-45">
-                                <div class="product-img product-img-zoom mb-25">
-                                    <a href="product-details.html">
-                                        <img src="assets/images/product/product-99.jpg" alt="">
-                                    </a>
-                                </div>
-                                <div class="product-content">
-                                    <h4><a href="product-details.html">Product Title</a></h4>
-                                    <div class="product-price">
-                                        <span>$ 124</span>
-                                        <span class="old-price">$ 130</span>
-                                    </div>
-                                </div>
-                                <div class="product-action-position-1 text-center">
-                                    <div class="product-content">
-                                        <h4><a href="product-details.html">Product Title</a></h4>
-                                        <div class="product-price">
-                                            <span>$ 124</span>
-                                            <span class="old-price">$ 130</span>
-                                        </div>
-                                    </div>
-                                    <div class="product-action-wrap">
-                                        <div class="product-action-cart">
-                                            <button title="Add to Cart">Add to cart</button>
-                                        </div>
-                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
-                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
-                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="product-wrap mb-45">
-                                <div class="product-img product-img-zoom mb-25">
-                                    <a href="product-details.html">
-                                        <img src="assets/images/product/product-100.jpg" alt="">
-                                    </a>
-                                </div>
-                                <div class="product-content">
-                                    <h4><a href="product-details.html">Product Title</a></h4>
-                                    <div class="product-price">
-                                        <span>$ 124</span>
-                                        <span class="old-price">$ 130</span>
-                                    </div>
-                                </div>
-                                <div class="product-action-position-1 text-center">
-                                    <div class="product-content">
-                                        <h4><a href="product-details.html">Product Title</a></h4>
-                                        <div class="product-price">
-                                            <span>$ 124</span>
-                                            <span class="old-price">$ 130</span>
-                                        </div>
-                                    </div>
-                                    <div class="product-action-wrap">
-                                        <div class="product-action-cart">
-                                            <button title="Add to Cart">Add to cart</button>
-                                        </div>
-                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
-                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
-                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="product-wrap mb-45">
-                                <div class="product-img product-img-zoom mb-25">
-                                    <a href="product-details.html">
-                                        <img src="assets/images/product/product-101.jpg" alt="">
-                                    </a>
-                                </div>
-                                <div class="product-content">
-                                    <h4><a href="product-details.html">Product Title</a></h4>
-                                    <div class="product-price">
-                                        <span>$ 124</span>
-                                        <span class="old-price">$ 130</span>
-                                    </div>
-                                </div>
-                                <div class="product-action-position-1 text-center">
-                                    <div class="product-content">
-                                        <h4><a href="product-details.html">Product Title</a></h4>
-                                        <div class="product-price">
-                                            <span>$ 124</span>
-                                            <span class="old-price">$ 130</span>
-                                        </div>
-                                    </div>
-                                    <div class="product-action-wrap">
-                                        <div class="product-action-cart">
-                                            <button title="Add to Cart">Add to cart</button>
+                                            <button title="Add to Cart" onclick="addCart()">Add to cart</button>
                                         </div>
                                         <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
                                         <button title="Add to Compare"><i class="icon-compare"></i></button>
@@ -1724,69 +1488,7 @@
             </div>
         </div>
     </div>
-    <div class="instagram-area pt-160 pb-125">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6 d-block d-sm-none">
-                    <div class="section-title mt-55 mb-30 text-center">
-                        <h2 class="bold">Follow Us On Instagram</h2>
-                        <span>@hashop</span>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="single-instafeed mb-30">
-                        <a href="#"><img src="assets/images/instafeed/instafeed-17.jpg" alt=""></a>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 d-none d-sm-block">
-                    <div class="section-title mt-55 mb-30 text-center">
-                        <h2 class="bold">Follow Us On Instagram</h2>
-                        <span>@hashop</span>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="single-instafeed mb-30">
-                        <a href="#"><img src="assets/images/instafeed/instafeed-18.jpg" alt=""></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="single-instafeed mb-30">
-                        <a href="#"><img src="assets/images/instafeed/instafeed-19.jpg" alt=""></a>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <div class="single-instafeed mb-30">
-                        <a href="#"><img src="assets/images/instafeed/instafeed-20.jpg" alt=""></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="single-instafeed mb-30">
-                        <a href="#"><img src="assets/images/instafeed/instafeed-21.jpg" alt=""></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="single-instafeed mb-30">
-                        <a href="#"><img src="assets/images/instafeed/instafeed-22.jpg" alt=""></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="single-instafeed mb-30">
-                        <a href="#"><img src="assets/images/instafeed/instafeed-23.jpg" alt=""></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="single-instafeed mb-30">
-                        <a href="#"><img src="assets/images/instafeed/instafeed-24.jpg" alt=""></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="single-instafeed mb-30">
-                        <a href="#"><img src="assets/images/instafeed/instafeed-25.jpg" alt=""></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
     <div class="blog-area pb-125">
         <div class="container">
             <div class="section-title st-peragraph-width st-peragraph-auto text-center mb-65">
@@ -1842,15 +1544,17 @@
         <p>
             <a class="btn btn-lg btn-dark" href="/mypage">마이페이지</a>
             <a class="btn btn-lg btn-dark" href="/itemMain">상품 목록</a>
+            <a class="btn btn-lg btn-dark" href="/main/address/register">주소 등록</a>
+            <a class="btn btn-lg btn-dark" href="/main/address">주소 목록</a>
         </p>
         <p class="lead">주문 기능</p>
         <p>
-            <a class="btn btn-lg btn-info" href="/order">상품 주문</a>
             <a class="btn btn-lg btn-info" href="/orders">주문 내역</a>
+        <p class="nav-item" sec:authorize="isAuthenticated()">
+            <a class="nav-link" href="/cart">장바구니</a>
+        </p>
         </p>
     </div>
 </div>
-<footer th:replace="fragments/main/footer::footer"></footer>
-<th:block th:replace="fragments/main/script :: script"/>
-</body>
+</div>
 </html>

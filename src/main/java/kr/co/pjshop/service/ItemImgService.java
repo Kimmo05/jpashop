@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.util.StringUtils;
+
 import javax.persistence.EntityNotFoundException;
 
 @Service
@@ -32,7 +33,7 @@ public class ItemImgService {
         if(!StringUtils.isEmpty(oriImgName)){
             imgName = fileService.uploadFile(itemImgLocation, oriImgName,
                     itemImgFile.getBytes());
-            imgUrl = "src/main/resources/static/images" + imgName;
+            imgUrl = "/images/item/" + imgName;
         }
 
         //상품 이미지 정보 저장

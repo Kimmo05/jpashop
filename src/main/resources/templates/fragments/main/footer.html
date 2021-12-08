@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
     <footer class="footer-area bg-gray-3 pt-160" th:fragment="footer">
         <div class="footer-top pb-120">
             <div class="container">
@@ -80,5 +79,6 @@
             </div>
         </div>
     </footer>
-
+    <th:block layout:fragment="script"></th:block>
+    <th:block layout:fragment="css"></th:block>
 </html>

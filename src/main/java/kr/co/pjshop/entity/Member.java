@@ -2,21 +2,16 @@ package kr.co.pjshop.entity;
 
 
 import kr.co.pjshop.constant.Role;
-import kr.co.pjshop.dto.MemberFormDto;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="member")
+@Table(name="members")
 @Getter @Setter
-@ToString
+@NoArgsConstructor
 public class Member extends BaseEntity {
 
     @Id
@@ -25,30 +20,53 @@ public class Member extends BaseEntity {
     private Long id;
 
     private String name;
-    private String loginId; //로그인 아이디
+    private String loginId;
 
-    @Column(unique = true)
     private String email;
 
     private String password;
-    private String phoneNumber;
-    private String address;
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Order> orderList = new ArrayList<>();
+
+    @Embedded
+    private MemberAddress memberAddress;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public static Member createMember(@Valid MemberFormDto memberFormDto, PasswordEncoder passwordEncoder){
-        Member member = new Member();
-        member.setName(memberFormDto.getName());
-        member.setEmail(memberFormDto.getEmail());
-        member.setLoginId(memberFormDto.getLoginId());
-        member.setPhoneNumber(memberFormDto.getPhoneNumber());
-        member.setAddress(memberFormDto.getAddress());
-        String password = passwordEncoder.encode(memberFormDto.getPassword());
-        member.setPassword(password);
-        return member;
+    private String birthday;
+
+    private int visitCount;
+
+    private int orderCount;
+
+    private String phoneNumber;
+
+    private String homePhoneNumber;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Mileage> mileageList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<DeliveryAddress> deliveryAddressList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Order> orderList = new ArrayList<>();
+
+    public Member(String name, String loginId, String password) {
+        this.name = name;
+        this.loginId = loginId;
+        this.password = password;
     }
+    @Builder
+    public Member(Long id, String loginId, String password, String name, String homePhoneNumber, String phoneNumber, String email, String birthday) {
+        this.id = id;
+        this.loginId = loginId;
+        this.password = password;
+        this.name = name;
+        this.homePhoneNumber = homePhoneNumber;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.birthday = birthday;
+    }
+
 
 }

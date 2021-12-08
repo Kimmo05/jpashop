@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainlayout2}">
+
+<head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+
+<!-- 사용자 스크립트 추가 -->
+<th:block layout:fragment="script">
+    <script src="/assets/js/vendor/jquery-v3.6.0.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="/assets/js/vendor/jquery-migrate-v3.3.2.min.js"></script>
+    <script th:inline="javascript">
+
+        $(document).ready(function(){
+            $("input[name=cartChkBox]").change( function(){
+                getOrderTotalPrice();
+            });
+        });
+
+        function getOrderTotalPrice(){
+            var orderTotalPrice = 0;
+            $("input[name=cartChkBox]:checked").each(function() {
+                var cartItemId = $(this).val();
+                var price = $("#price_" + cartItemId).attr("data-price");
+                var count = $("#count_" + cartItemId).val();
+                orderTotalPrice += price*count;
+            });
+
+            $("#orderTotalPrice").html(orderTotalPrice+'원');
+        }
+
+        function changeCount(obj){
+            var count = obj.value;
+            var cartItemId = obj.id.split('_')[1];
+            var price = $("#price_" + cartItemId).data("price");
+            var totalPrice = count*price;
+            $("#totalPrice_" + cartItemId).html(totalPrice+"원");
+            getOrderTotalPrice();
+            updateCartItemCount(cartItemId, count);
+        }
+
+        function checkAll(){
+            if($("#checkall").prop("checked")){
+                $("input[name=cartChkBox]").prop("checked",true);
+            }else{
+                $("input[name=cartChkBox]").prop("checked",false);
+            }
+            getOrderTotalPrice();
+        }
+
+        function updateCartItemCount(cartItemId, count){
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var url = "/cartItem/" + cartItemId+"?count=" + count;
+
+            $.ajax({
+                url      : url,
+                type     : "PATCH",
+                beforeSend : function(xhr){
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType : "json",
+                cache   : false,
+                success  : function(result, status){
+                    console.log("cartItem count update success");
+                },
+                error : function(jqXHR, status, error){
+
+                    if(jqXHR.status == '401'){
+                        alert('로그인 후 이용해주세요');
+                        location.href='/members/login';
+                    } else{
+                        alert(jqXHR.responseJSON.message);
+                    }
+
+                }
+            });
+        }
+
+        function deleteCartItem(obj){
+            var cartItemId = obj.dataset.id;
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var url = "/cartItem/" + cartItemId;
+
+            $.ajax({
+                url      : url,
+                type     : "DELETE",
+                beforeSend : function(xhr){
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType : "json",
+                cache   : false,
+                success  : function(result, status){
+                    location.href='/cart';
+                },
+                error : function(jqXHR, status, error){
+
+                    if(jqXHR.status == '401'){
+                        alert('로그인 후 이용해주세요');
+                        location.href='/members/login';
+                    } else{
+                        alert(jqXHR.responseJSON.message);
+                    }
+
+                }
+            });
+        }
+
+        function orders(){
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var url = "/cart/orders";
+
+            var dataList = new Array();
+            var paramData = new Object();
+
+            $("input[name=cartChkBox]:checked").each(function() {
+                var cartItemId = $(this).val();
+                var data = new Object();
+                data["cartItemId"] = cartItemId;
+                dataList.push(data);
+            });
+
+            paramData['cartOrderDtoList'] = dataList;
+
+            var param = JSON.stringify(paramData);
+
+            $.ajax({
+                url      : url,
+                type     : "POST",
+                contentType : "application/json",
+                data     : param,
+                beforeSend : function(xhr){
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType : "json",
+                cache   : false,
+                success  : function(result, status){
+                    alert("주문이 완료 되었습니다.");
+                    location.href='/orders';
+                },
+                error : function(jqXHR, status, error){
+
+                    if(jqXHR.status == '401'){
+                        alert('로그인 후 이용해주세요');
+                        location.href='/members/login';
+                    } else{
+                        alert(jqXHR.responseJSON.message);
+                    }
+
+                }
+            });
+        }
+        // 배송정보 선택 AJAX
+        $('input[name=address_id]').click(function(){
+            console.log($(this).val());
+            if($(this).val() == 'new_addr'){
+                $('#address_recipient').val('');
+                $('#sample6_postcode').val('');
+                $('#sample6_address').val('');
+                $('#sample6_detailAddress').val('');
+                $('.address_home_number:not(:first-child)').val('');
+                $('.address_phone_number:not(:first-child)').val('');
+            }else{
+
+                let addr = $(this).val();
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
+                $.ajax({
+                    url:"/main/payment/changeaddress/" + addr,
+                    type:'POST',
+                    // dataType: 'json',
+                    beforeSend : function(xhr)
+                    {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                        xhr.setRequestHeader(header, token);
+                    },
+                    success:function(address_obj){
+                        console.log(address_obj)
+                        console.log(typeof(address_obj))
+                        $('#address_recipient').val(address_obj.recipient)
+                        $('#sample6_postcode').val(address_obj.zipcode)
+                        $('#sample6_address').val(address_obj.city)
+                        $('#sample6_detailAddress').val(address_obj.street)
+                        const homenumber = address_obj.addressHomePhoneNumber
+                        $("#address_home_number").val(homenumber[0]).prop('selected', true)
+                        $(".address_home_number").each(function(idx, item){
+                            if(idx == 0){
+                                return true
+                            }
+                            $(item).val(homenumber[idx])
+                        })
+
+                        const phonenumber = address_obj.addressPhoneNumber
+                        $("#address_phone_number").val(phonenumber[0]).prop('selected', true)
+                        $(".address_phone_number").each(function(idx, item){
+                            if(idx == 0){
+                                return true
+                            }
+                            $(item).val(phonenumber[idx])
+                        })
+
+                    },
+                    error:function(e){
+                        alert(e.responseText);
+                    }
+                })
+            }
+        })
+        function sample6_execDaumPostcode() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                    // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                    // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                    var addr = ''; // 주소 변수
+                    var extraAddr = ''; // 참고항목 변수
+
+                    //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                        addr = data.roadAddress;
+                    } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                        addr = data.jibunAddress;
+                    }
+
+                    // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                    if(data.userSelectedType === 'R'){
+                        // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                        // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                        if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                            extraAddr += data.bname;
+                        }
+                        // 건물명이 있고, 공동주택일 경우 추가한다.
+                        if(data.buildingName !== '' && data.apartment === 'Y'){
+                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                        if(extraAddr !== ''){
+                            extraAddr = ' (' + extraAddr + ')';
+                        }
+                        // 조합된 참고항목을 해당 필드에 넣는다.
+                        document.getElementById("sample6_detailAddress").value = extraAddr;
+
+                    } else {
+                        document.getElementById("sample6_detailAddress").value = '';
+                    }
+
+                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                    document.getElementById('sample6_postcode').value = data.zonecode;
+                    document.getElementById("sample6_address").value = addr;
+                    // 커서를 상세주소 필드로 이동한다.
+                    document.getElementById("sample6_detailAddress").focus();
+                }
+            }).open();
+        }
+
+    </script>
+
+</th:block>
+
+<!-- 사용자 CSS 추가 -->
+<th:block layout:fragment="css">
+    <style>
+        /*.content-mg{*/
+        /*    margin-left:25%;*/
+        /*    margin-right:25%;*/
+        /*    margin-top:2%;*/
+        /*    margin-bottom:100px;*/
+        /*}*/
+        .repImgDiv{
+            margin-right:15px;
+            margin-left:15px;
+            height:auto;
+        }
+        .repImg{
+            height:100px;
+            width:100px;
+        }
+        .fs18{
+            font-size:18px
+        }
+        .fs24{
+            font-size:24px
+        }
+        section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .section_caption {
+            padding: 45px 0;
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .section_content {
+            margin-top: 20px;
+            width: 1260px;
+        }
+
+        /*benefit_info*/
+        .benefit_info {
+            display: flex;
+            border: 1px solid var(--border-color-basic);
+            padding: 10px 0;
+        }
+        .benefit_info .benefit_info_caption {
+            width: 105px;
+            border-right: 1px solid var(--border-color-basic);
+            padding: 17px 25px;
+            font-size: 13px;
+        }
+
+        .benefit_info .benefit_info_desc {
+            width: 100%;
+            padding: 0px 20px;
+            font-size: 12px;
+        }
+
+        .benefit_info .benefit_info_desc .benefit_info_desc_item {
+            width: 100%;
+            padding-bottom:8px;
+        }
+
+        .benefit_info .benefit_info_desc .benefit_info_mileage {
+            border-top: 1px solid var(--border-color-basic);
+            padding-bottom: 0;
+            padding-top: 8px;
+        }
+
+
+
+        /*about_order*/
+        .about_order {
+            font-size: 12px;
+            color: var(--font-color-gray);
+            border-top: 1px solid var(--border-color-basic);
+            border-bottom: 1px solid var(--border-color-basic);
+            padding: 10px 10px;
+            margin-top: 20px;
+        }
+
+        .about_order i {
+            display: inline-block;
+            font-size: 10px;
+            color: red;
+            border: 1px solid var(--border-color-basic2);
+            padding: 1px 4px;
+            border-radius: 3px;
+
+        }
+
+        /*orderlist*/
+        .orderlist {
+            margin-top: 10px;
+        }
+
+        .orderlist .orderlist_caption{
+            font-size: 13px;
+            padding: 0 10px;
+        }
+
+        .orderlist .orderlist_content{
+            margin-top: 10px;
+        }
+
+        table{
+            width: 100%;
+            font-size: 12px;
+            color: var(--font-color-gray2);
+            border-top: 1px solid var(--border-color-basic);
+            border-collapse: collapse;
+        }
+
+        .orderlist td, th {
+            text-align: center;
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color-basic2);
+        }
+
+        .orderlist table img {
+            width: 80px;
+            display: block;
+        }
+
+        input[type=number] {
+            width: 50px;
+            height: 25px;
+            border: 1px solid var(--border-color-basic2);
+            border-radius: 3px;
+            padding-left: 5px;
+            font-size: 12px;
+        }
+        .numberupdatebtn {
+            margin-top: 5px;
+            width: 50px;
+            height: 25px;
+            border: 1px solid var(--font-color-gray);
+            border-radius: 3px;
+            font-size: 12px;
+            background-color: white;
+        }
+
+        .numberupdatebtn:hover {
+            filter: brightness(90%);
+        }
+
+        .order_mileage::before {
+            font-size: 10px;
+            content: '적';
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            background-color: #b88cc5;
+            color: white;
+            border-radius: 3px;
+            text-align: center;
+            margin-right: 2px;
+        }
+
+
+        /*bottombtn_box*/
+
+        .bottombtn_box {
+            font-size: 13px;
+            margin-top: 10px;
+            padding-left: 10px;
+        }
+
+        .bottombtn {
+            font-size: 12px;
+            background-color: #999999;
+            padding: 5px 10px;
+            color:white;
+            border: none;
+            border-radius: 5px;
+        }
+        .bottombtn:hover{
+            filter:brightness(90%);
+        }
+
+
+        /*orderform*/
+
+
+        #orderform {
+            margin-top: 50px;
+        }
+
+        #orderform .delivery_info_caption {
+            display: flex;
+            justify-content: space-between;
+            padding: 7px 10px;
+            font-size: 13px;
+        }
+        #orderform .delivery_info_caption .delivery_info_caption_right span{
+            color: red;
+        }
+
+        #orderform .delivery_info_table {
+            border-top: 1px solid var(--border-color-basic2);
+        }
+
+        #orderform .delivery_info_table th, td {
+            font-weight: normal;
+            padding: 7px 10px;
+            border-bottom: 1px solid var(--border-color-basic2);
+        }
+
+        #orderform .delivery_info_table th{
+            text-align: left;
+            border-right: 1px solid var(--border-color-basic2);
+        }
+
+        #orderform .delivery_info_table th label span {
+            font-size: 10px;
+            color: red;
+        }
+
+        #orderform .delivery_info_table td .address_margin { /*주소, 상세주소 부분*/
+            margin-top: 5px;
+            width: 460px;
+        }
+
+        #orderform .delivery_info_table .address_choice {
+            padding: 4px 0;
+            display: flex;
+        }
+
+        #orderform .delivery_info_table .address_choice label{
+            position: relative;
+            top: -2px;
+            margin-right: 5px;
+        }
+
+        #orderform .delivery_info_table .adjust_height {
+            vertical-align: text-top;
+        }
+
+        #postbtn {
+            padding: 3px 10px;
+            font-size: 13px;
+            background-color: white;
+            border: 1px solid #b4b4b4;
+            border-radius: 3px;
+        }
+
+        #postbtn:hover {
+            filter: brightness(90%);
+        }
+
+        #postbtn i {
+            font-size: 10px;
+            color: red;
+            margin-left: 5px;
+        }
+
+        #sample6_postcode {
+            width: 70px;
+        }
+
+        #orderform .delivery_info_table td .address_home_number {
+            width: 70px;
+        }
+
+        #orderform .delivery_info_table td .address_phone_number {
+            width: 70px;
+        }
+
+        /*payment*/
+        .payment_caption {
+            margin-top: 30px;
+            padding: 7px 10px;
+            font-size: 13px;
+        }
+
+        .payment_table th {
+            font-weight: normal;
+            padding: 20px;
+            color: black;
+        }
+
+        .payment_table td {
+            text-align: center;
+            color: black;
+            font-weight: bold;
+            font-size: 20px;
+            padding: 20px;
+        }
+
+        .mileage_table {
+            margin-top: 20px;
+            border-top: 1px solid var(--border-color-basic2);
+        }
+
+        .mileage_table th {
+            font-weight: normal;
+            text-align: left;
+            border-right: 1px solid var(--border-color-basic2);
+            vertical-align: text-top;
+        }
+
+        .mileage_table td {
+            vertical-align: text-top;
+        }
+
+        .mileage_table .canuse {
+            color: red;
+            font-weight: bold;
+        }
+
+        /*결제하기 버튼*/
+        .payment_submit {
+            margin-top: 20px;
+            text-align: right;
+        }
+
+
+        /*input, select, placeholder*/
+
+        input[type="text"], select {
+            height: 25px;
+            border:1px solid var(--border-color-basic2);
+            font-size: 12px;
+            padding: 3px;
+        }
+
+        input[type="text"]::placeholder {
+            font-size: 12px;
+        }
+
+        input[type="submit"] {
+            font-size: 13px;
+            padding: 10px 80px;
+            background-color: #333333;
+            border: none;
+            color: white;
+        }
+
+
+
+
+    </style>
+</th:block>
+
+<div layout:fragment="content" class="content-mg">
+    <div class="breadcrumb-area breadcrumb-mt breadcrumb-ptb-2">
+        <div class="container">
+            <div class="breadcrumb-content">
+                <h2>Cart</h2>
+                <ul>
+                    <li>
+                        <a href="index.html">Home </a>
+                    </li>
+                    <li><span> > </span></li>
+                    <li>
+                        <a href="index.html">Product </a>
+                    </li>
+                    <li><span> > </span></li>
+                    <li class="active"> Cart </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="cart-check-order-link-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 ml-auto mr-auto">
+                    <div class="cart-check-order-link">
+                        <a  href="cart.html">Shopping Cart</a>
+                        <a class="active" href="checkout.html">Check Out</a>
+                        <a href="/orders">Order Complete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cart-area bg-gray pt-160 pb-160">
+        <div class="container">
+            <form action="#">
+                <div class="proceed-btn">
+                    <a href="#">Proceed to Checkout</a>
+                </div>
+                <div class="cart-table-content">
+                    <div class="table-content table-responsive">
+                        <table>
+                            <colgroup>
+                                <col width="10%"/>
+                                <col width="40%"/>
+                                <col width="20%"/>
+                                <col width="10%"/>
+                                <col width="15%"/>
+                            </colgroup>
+                            <thead>
+                            <tr >
+                                <th><input type="checkbox" id="checkall" onclick="checkAll()" ></th>
+                                <th>Product</th>
+                                <th class="th-text-center"> Price</th>
+                                <th class="th-text-center">Quantity</th>
+                                <th class="th-text-center">Price</th>
+                                <th class="th-text-center">Remove</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="cartItem : ${cartItems}">
+                                <td class="text-center align-middle">
+                                    <input type="checkbox" name="cartChkBox" th:value="${cartItem.cartItemId}">
+                                </td>
+                                <td class="cart-product">
+                                    <div class="product-img-info-wrap">
+                                        <div class="product-img">
+                                            <img th:src="${cartItem.imgUrl}" class = "rounded repImg" th:alt="${cartItem.itemNm}">
+                                        </div>
+                                        <div class="product-info">
+                                            <h4 th:text="${cartItem.itemNm}"><a href="#">Demo Product Title</a></h4>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="product-price">
+                                     <span th:id="'price_' + ${cartItem.cartItemId}"
+                                           th:data-price="${cartItem.price}"
+                                           th:text="${cartItem.price} + '원'" class="amount">
+                                </span></td>
+                                <td class="cart-quality">
+                                    <div class="pro-details-quality">
+                                        <div >
+                                            <input type="number" name="count" th:id="'count_' + ${cartItem.cartItemId}"
+                                                   th:value="${cartItem.count}" min="1"
+                                                   onchange="changeCount(this)" class="form-control mr-2" >
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="product-total">  <span th:id="'totalPrice_' + ${cartItem.cartItemId}"
+                                                                  name="totalPrice" th:text="${cartItem.price * cartItem.count} + '원'">
+                    </span></td>
+                                <td class="product-remove"> <button type="button" class="close" aria-label="Close">
+                                    <span aria-hidden="true" th:data-id="${cartItem.cartItemId}" onclick="deleteCartItem(this)">&times;</span>
+                                </button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="cart-shiping-update-wrapper">
+                        <a href="#">Continure Shopping</a>
+                        <a href="#">Update Cart</a>
+                        <h4 class="text-center">
+                            총 주문 금액 : <span id="orderTotalPrice" class="text-danger">0원</span>
+                        </h4>
+                        <button type="button" class="btn btn-primary btn-lg" onclick="orders()">주문하기</button>
+                    </div>
+                </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="discount-code-wrapper discount-tax-wrap">
+                        <h4>Coupon Code </h4>
+                        <div class="discount-code">
+                            <p>Enter your coupon code if you have one!</p>
+                        </div>
+                        <div class="delivery_info_caption">
+                            <div class="delivery_info_caption_left">배송 정보</div>
+                            <div class="delivery_info_caption_right"><span>＊</span> 필수입력사항</div>
+                        </div>
+                        <table class="delivery_info_table">
+                            <colgroup>
+                                <col width="120px"/>
+                                <col width="auto"/>
+                            </colgroup>
+                            <tr>
+                                <th>배송지 선택</th>
+                                <td>
+                                    <div class="address_choice"> <!-- 타임리프 값 넣어주기-->
+                                        <div><input type="radio" name="address_id" value="new_addr" id = "0" checked> <label for="0">새로운 배송지</label></div>
+                                        <div th:each="address, i:${addressList}"><input type="radio" name="address_id" value="home" id="2" th:value="${address.id}" th:id="${i.count}">
+                                            <label for="2" th:for="${i.count}" th:text="${address.placeName}">우리집</label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="address_recipient">받으시는 분<span>＊</span></label></th>
+                                <td><input type="text" name="address_recipient" id="address_recipient"></td>
+                            </tr>
+                            <tr>
+                                <!-- vertical align을 맞추기위해 th와 td를 같은 class로 지정-->
+                                <th class="adjust_height"><label for="sample6_postcode">주소<span>＊</span></label></th>
+                                <td class="adjust_height">
+                                    <input type="text" id="sample6_postcode" name="zipcode" placeholder="우편번호">
+                                    <button type="button" onclick="sample6_execDaumPostcode()" id="postbtn"><span>우편번호</span><i class="fas fa-chevron-right"></i></button><br>
+                                    <input type="text" id="sample6_address" name="city" placeholder="주소" class="address_margin"> 기본주소<br>
+                                    <input type="text" id="sample6_detailAddress" name="street" placeholder="상세주소" class="address_margin"> 나머지주소
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="address_home_number">일반전화<span>＊</span></label></th>
+                                <td>
+                                    <select name="addressHomePhoneNumber[]" id="address_home_number" class="address_home_number">
+                                        <option value="02">02</option>
+                                        <option value="031">031</option>
+                                        <option value="032">032</option>
+                                        <option value="033">033</option>
+                                        <option value="041">041</option>
+                                        <option value="042">042</option>
+                                        <option value="043">043</option>
+                                        <option value="044">044</option>
+                                        <option value="051">051</option>
+                                        <option value="052">052</option>
+                                        <option value="053">053</option>
+                                        <option value="054">054</option>
+                                        <option value="055">055</option>
+                                    </select>
+                                    -
+                                    <input type="text" name="addressHomePhoneNumber[]" class="address_home_number">
+                                    -
+                                    <input type="text" name="addressHomePhoneNumber[]" class="address_home_number">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="address_phone_number">휴대전화<span>＊</span></label></th>
+                                <td>
+                                    <select name="addressPhoneNumber[]" id="address_phone_number" class="address_phone_number">
+                                        <option value="010">010</option>
+                                        <option value="011">011</option>
+                                        <option value="016">016</option>
+                                        <option value="017">017</option>
+                                        <option value="018">018</option>
+                                        <option value="019">019</option>
+                                    </select>
+                                    -
+                                    <input type="text" name="addressPhoneNumber[]" class="address_phone_number">
+                                    -
+                                    <input type="text" name="addressPhoneNumber[]" class="address_phone_number">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+</html>

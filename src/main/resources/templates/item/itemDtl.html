@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainlayout2}">
+
+<head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+
+<!-- 사용자 스크립트 추가 -->
+<th:block layout:fragment="script">
+    <script src="/assets/js/vendor/jquery-v3.6.0.min.js"></script>
+    <script th:inline="javascript">
+        $(document).ready(function(){
+
+            calculateToalPrice();
+
+            $("#count").change( function(){
+                calculateToalPrice();
+            });
+        });
+
+        function calculateToalPrice(){
+            var count = $("#count").val();
+            var price = $("#price").val();
+            var totalPrice = price*count;
+            $("#totalPrice").html(totalPrice + '원');
+        }
+
+        function order(){
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var url = "/order";
+            var paramData = {
+                itemId : $("#itemId").val(),
+                count : $("#count").val()
+            };
+
+            var param = JSON.stringify(paramData);
+
+            $.ajax({
+                url      : url,
+                type     : "POST",
+                contentType : "application/json",
+                data     : param,
+                beforeSend : function(xhr){
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType : "json",
+                cache   : false,
+                success  : function(result, status){
+                    alert("주문이 완료 되었습니다.");
+                    location.href='/';
+                },
+                error : function(jqXHR, status, error){
+
+                    if(jqXHR.status == '401'){
+                        alert('로그인 후 이용해주세요');
+                        location.href='/members/login';
+                    } else{
+                        alert(jqXHR.responseText);
+                    }
+
+                }
+            });
+        }
+
+        function addCart(){
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var url = "/cart";
+            var paramData = {
+                itemId : $("#itemId").val(),
+                count : $("#count").val()
+            };
+
+            var param = JSON.stringify(paramData);
+
+            $.ajax({
+                url      : url,
+                type     : "POST",
+                contentType : "application/json",
+                data     : param,
+                beforeSend : function(xhr){
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType : "json",
+                cache   : false,
+                success  : function(result, status){
+                    alert("상품을 장바구니에 담았습니다.");
+                    location.href='/';
+                },
+                error : function(jqXHR, status, error){
+
+                    if(jqXHR.status == '401'){
+                        alert('로그인 후 이용해주세요');
+                        location.href='/members/login';
+                    } else{
+                        alert(jqXHR.responseText);
+                    }
+
+                }
+            });
+        }
+        function addCart2(){
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var url = "/cart";
+            var paramData = {
+                itemId : $("#itemId").val(),
+                count : $("#count").val()
+            };
+
+            var param = JSON.stringify(paramData);
+
+            $.ajax({
+                url      : url,
+                type     : "POST",
+                contentType : "application/json",
+                data     : param,
+                beforeSend : function(xhr){
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType : "json",
+                cache   : false,
+                success  : function(result, status){
+                    location.href='/cart/payment';
+                },
+                error : function(jqXHR, status, error){
+
+                    if(jqXHR.status == '401'){
+                        alert('로그인 후 이용해주세요');
+                        location.href='/members/login';
+                    } else{
+                        alert(jqXHR.responseText);
+                    }
+
+                }
+            });
+        }
+    </script>
+</th:block>
+
+<!-- 사용자 CSS 추가 -->
+<th:block layout:fragment="css">
+    <style>
+        /*.mgb-15{*/
+        /*    margin-bottom:15px;*/
+        /*}*/
+        /*.mgt-30{*/
+        /*    margin-top:30px;*/
+        /*}*/
+        /*.mgt-50{*/
+        /*    margin-top:50px;*/
+        /*}*/
+        /*.repImgDiv{*/
+        /*    margin-right:11px;*/
+        /*    height:auto;*/
+        /*    width:50%;*/
+        /*}*/
+        /*.repImg{*/
+        /*    width:100%;*/
+        /*    height:400px;*/
+        /*}*/
+        /*.wd50{*/
+        /*    height:auto;*/
+        /*    width:50%;*/
+        /*}*/
+    </style>
+</th:block>
+
+<div layout:fragment="content" >
+    <input type="hidden" id="itemId" th:value="${item.id}">
+    <div class="product-details-area slider-mt-7 pt-50">
+        <div class="section-padding-14">
+            <div class="container-fluid">
+                <div class="row no-gutters">
+                    <div class="col-xl-7 col-lg-12 col-md-12">
+                        <div class="pro-details-9-img pro-details-img-zoom">
+
+                            <img th:src="${item.itemImgDtoList[0].imgUrl}"  th:alt="${item.itemNm}">
+
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-lg-12 col-md-12">
+                        <div class="product-details-content product-details-content-9">
+                             <span th:if="${item.itemSellStatus == T(kr.co.pjshop.constant.ItemSellStatus).SELL}" class="badge badge-primary mgb-15">
+                판매중
+            </span>
+                            <span th:unless="${item.itemSellStatus == T(kr.co.pjshop.constant.ItemSellStatus).SELL}" class="badge btn-danger mgb-15" >
+                품절
+            </span>
+                            <h1 th:text="${item.itemNm}">Electronic Shop</h1>
+
+                            <p class="pro-dec-paragraph-3">Seamlessly predominate enterprise metrics without performance based process improvements.</p>
+                            <div class="pro-details-price">
+                                <input type="hidden" th:value="${item.price}" id="price" name="price">
+                                <span th:text="${item.price}"></span>원
+                                <span class="old-price" th:text="${item.price}+2000">US $95.72</span>
+                            </div>
+
+                            <div class="pro-details-quality">
+                                <span>Quantity:</span>
+<!--                                <div class="cart-plus-minus">-->
+<!--                                    <input class="cart-plus-minus-box" type="text"  value="1" name="count" id="count" >-->
+<!--                                </div>-->
+                                <div class="input-group w-50">
+
+                                    <input type="number" name="count" id="count" class="form-control" value="1" min="1">
+                                </div>
+                            </div>
+                            <div class="product-details-meta">
+                                <ul>
+                                    <li><span>Model:</span> <a href="#">Odsy-1000</a></li>
+                                    <li><span>Ship To</span> <a href="#">2834 Laurel Lane</a>, <a href="#">Mentone</a> , <a href="#">Texas</a></li>
+                                    <li><span>Total:</span>  <h3 name="totalPrice" id="totalPrice" class="font-weight-bold"></h3></li>
+
+                                </ul>
+                            </div>
+                            <div class="pro-details-action-wrap">
+                                <div class="pro-details-buy-now">
+                                    <a href="/cart/payment">Buy Now</a>
+                                    <div th:if="${item.itemSellStatus == T(kr.co.pjshop.constant.ItemSellStatus).SELL}" class="text-right">
+                                        <button type="button" class="btn btn-light border border-primary btn-lg" onclick="addCart()">장바구니 담기</button>
+                                        <button type="button" class="btn btn-light btn-lg border " onclick="order()">주문하기</button>
+                                        <button type="button" class="btn btn-light border border-primary btn-lg" onclick="addCart2()">결제하기</button>
+                                    </div>
+                                    <div th:unless="${item.itemSellStatus == T(kr.co.pjshop.constant.ItemSellStatus).SELL}" class="text-right">
+                                        <button type="button" class="btn btn-danger btn-lg">품절</button>
+                                    </div>
+
+                                </div>
+                                <div class="pro-details-action">
+
+                                    <div class="product-dec-social">
+                                        <a class="facebook" title="Facebook" href="#"><i class="icon-social-facebook-square"></i></a>
+                                        <a class="twitter" title="Twitter" href="#"><i class="icon-social-twitter"></i></a>
+                                        <a class="instagram" title="Instagram" href="#"><i class="icon-social-instagram"></i></a>
+                                        <a class="pinterest" title="Pinterest" href="#"><i class="icon-social-pinterest"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section-padding-15 product-details-9-middle">
+            <div class="container-fluid">
+                <div class="row no-gutters flex-row-reverse">
+                    <div class="col-xl-7 col-lg-12 col-md-12">
+                        <div class="pro-details-9-2-img pro-details-img-zoom">
+                            <img src="assets/images/product-details/product-details-slider-9-2.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-lg-12 col-md-12">
+                        <div class="description-review-wrapper description-review-wrapper-9">
+                            <div class="panel-group" id="accordion1">
+                                <div class="panel pro-dec-accordion">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" href="#pro-dec-accordion1">
+                                                Description
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div data-parent="#accordion1" id="pro-dec-accordion1" class="dec-review-bottom panel-collapse collapse show">
+                                        <div class="panel-body description-wrap">
+                                            <p class="lead" th:text="${item.itemDetail}"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel pro-dec-accordion">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" data-toggle="collapse" href="#pro-dec-accordion2">
+                                                Specification
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div data-parent="#accordion1" id="pro-dec-accordion2" class="dec-review-bottom panel-collapse collapse">
+                                        <div class="panel-body description-wrap">
+                                            <div class="specification-wrap table-responsive">
+                                                <table>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>Name</td>
+                                                        <td>Salwar Kameez</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>SKU</td>
+                                                        <td>0x48e2c</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Models</td>
+                                                        <td>FX 829 v1</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Categories</td>
+                                                        <td>Digital Print</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Size</td>
+                                                        <td>60’’ x 40’’</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Brand </td>
+                                                        <td>Individual Collections</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Color</td>
+                                                        <td>Black, White</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel pro-dec-accordion">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" data-toggle="collapse" href="#pro-dec-accordion3">
+                                                Materials and Care
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div data-parent="#accordion1" id="pro-dec-accordion3" class="dec-review-bottom panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <div class="specification-wrap table-responsive">
+                                                <table>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>Top</td>
+                                                        <td>Cotton Digital Print Chain Stitch Embroidery Work</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Bottom</td>
+                                                        <td>Cotton Cambric</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Dupatta</td>
+                                                        <td>Digital Printed Cotton Malmal With Chain Stitch</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel pro-dec-accordion">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" data-toggle="collapse" href="#pro-dec-accordion4">
+                                                Ratings and reviews
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div data-parent="#accordion1" id="pro-dec-accordion4" class="dec-review-bottom panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <div class="review-wrapper">
+                                                <h2>1 review for Sleeve Button Cowl Neck</h2>
+                                                <div class="single-review pro-details-9-single-review">
+                                                    <div class="review-img" th:each="itemImg : ${item.itemImgDtoList}">
+                                                        <img th:if="${not #strings.isEmpty(itemImg.imgUrl)}" th:src="${itemImg.imgUrl}"  width="800">
+                                                    </div>
+                                                    <div class="review-content">
+                                                        <div class="review-top-wrap">
+                                                            <div class="review-name">
+                                                                <h5><span>John Snow</span> - March 14, 2019</h5>
+                                                            </div>
+                                                            <div class="review-rating">
+                                                                <i class="yellow icon-rating"></i>
+                                                                <i class="yellow icon-rating"></i>
+                                                                <i class="yellow icon-rating"></i>
+                                                                <i class="yellow icon-rating"></i>
+                                                                <i class="yellow icon-rating"></i>
+                                                            </div>
+                                                        </div>
+                                                        <p>Donec accumsan auctor iaculis. Sed suscipit arcu ligula, at egestas magna molestie a. Proin ac ex maximus, ultrices justo eget, sodales orci. Aliquam egestas libero ac turpis pharetra, in vehicula lacus scelerisque</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ratting-form-wrapper">
+                                                <span>Add a Review</span>
+                                                <p>Your email address will not be published. Required fields are marked <span>*</span></p>
+                                                <div class="ratting-form">
+                                                    <form action="#">
+                                                        <div class="row">
+                                                            <div class="col-lg-6 col-md-6">
+                                                                <div class="rating-form-style mb-20">
+                                                                    <label>Name <span>*</span></label>
+                                                                    <input type="text">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6 col-md-6">
+                                                                <div class="rating-form-style mb-20">
+                                                                    <label>Email <span>*</span></label>
+                                                                    <input type="email">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-12">
+                                                                <div class="star-box-wrap">
+                                                                    <div class="single-ratting-star">
+                                                                        <a href="#"><i class="icon-rating"></i></a>
+                                                                    </div>
+                                                                    <div class="single-ratting-star">
+                                                                        <a href="#"><i class="icon-rating"></i></a>
+                                                                        <a href="#"><i class="icon-rating"></i></a>
+                                                                    </div>
+                                                                    <div class="single-ratting-star">
+                                                                        <a href="#"><i class="icon-rating"></i></a>
+                                                                        <a href="#"><i class="icon-rating"></i></a>
+                                                                        <a href="#"><i class="icon-rating"></i></a>
+                                                                    </div>
+                                                                    <div class="single-ratting-star">
+                                                                        <a href="#"><i class="icon-rating"></i></a>
+                                                                        <a href="#"><i class="icon-rating"></i></a>
+                                                                        <a href="#"><i class="icon-rating"></i></a>
+                                                                        <a href="#"><i class="icon-rating"></i></a>
+                                                                    </div>
+                                                                    <div class="single-ratting-star">
+                                                                        <a href="#"><i class="icon-rating"></i></a>
+                                                                        <a href="#"><i class="icon-rating"></i></a>
+                                                                        <a href="#"><i class="icon-rating"></i></a>
+                                                                        <a href="#"><i class="icon-rating"></i></a>
+                                                                        <a href="#"><i class="icon-rating"></i></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="rating-form-style mb-20">
+                                                                    <label>Your review <span>*</span></label>
+                                                                    <textarea name="Your Review"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-12">
+                                                                <div class="form-submit">
+                                                                    <input type="submit" value="Submit">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 ml-auto mr-auto">
+                    <div class="pro-details-9-3-img pro-details-img-zoom mb-35">
+                        <img src="assets/images/product-details/product-details-slider-9-3.jpg" alt="">
+                    </div>
+                    <div class="pro-details-9-4-img pro-details-img-zoom">
+                        <img src="assets/images/product-details/product-details-slider-9-4.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

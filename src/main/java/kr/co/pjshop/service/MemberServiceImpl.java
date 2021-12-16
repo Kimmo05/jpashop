@@ -231,3 +231,4 @@ public class MemberServiceImpl implements UserDetailsService, MemberService {
     }
     //    회원탈퇴 기능
 }
+

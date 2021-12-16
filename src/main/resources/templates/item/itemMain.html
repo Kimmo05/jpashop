@@ -288,12 +288,11 @@
     <div class="breadcrumb-area breadcrumb-mt bg-gray breadcrumb-ptb-1">
         <div class="container">
             <div class="breadcrumb-content">
-                <h2>Fashion Shop</h2>
-                <p class="left">Seamlessly predominate enterprise metrics without performance based process improvements.</p>
+                <h2>Shop</h2>
             </div>
         </div>
         <div class="breadcrumb-img-2">
-            <img src="/assets/images/about/breadcrumb-3.png" alt="">
+            <img src="/assets/images/img/321X321.jpg">
         </div>
     </div>
     <div class="shop-area breadcrumb-mt section-padding-12 pt-25 pb-160">
@@ -301,60 +300,9 @@
             <div class="row flex-row-reverse">
                 <div class="col-xl-10 col-lg-9">
                     <div class="shop-wrap-5">
-                        <div class="shop-top-bar">
-                            <div class="shop-top-bar-left">
-                                <div class="shop-tab nav">
-                                    <a href="#shop-1" class="active" data-toggle="tab"><img class="inject-me" src="/assets/images/icon-img/shop-grid.svg" alt=""></a>
-                                    <a href="#shop-2" data-toggle="tab"><img class="inject-me" src="/assets/images/icon-img/shop-list.svg" alt=""></a>
-                                </div>
-                            </div>
-                            <div class="shop-top-bar-right">
-                                <div class="shop-page-list">
-                                    <ul>
-                                        <li>Show</li>
-                                        <li class="active"><a href="#">2</a></li>
-                                        <li><a href="#">4</a></li>
-                                        <li><a href="#">6</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
                         <div class="tab-content pt-30">
                             <div id="shop-1" class="tab-pane active">
                                 <div class="row">
-                                    <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
-                                        <div class="product-wrap mb-50">
-                                            <div class="product-img product-img-zoom mb-25">
-                                                <a href="product-details.html">
-                                                    <img src="/assets/images/product/product-95.jpg" alt="">
-                                                </a>
-                                            </div>
-                                            <div class="product-content">
-                                                <h4><a href="product-details.html">Modern Light</a></h4>
-                                                <div class="product-price">
-                                                    <span>$ 124</span>
-                                                    <span class="old-price">$ 130</span>
-                                                </div>
-                                            </div>
-                                            <div class="product-action-position-1 text-center">
-                                                <div class="product-content">
-                                                    <h4><a href="product-details.html">Modern Light</a></h4>
-                                                    <div class="product-price">
-                                                        <span>$ 124</span>
-                                                        <span class="old-price">$ 130</span>
-                                                    </div>
-                                                </div>
-                                                <div class="product-action-wrap">
-                                                    <div class="product-action-cart">
-                                                        <button title="Add to Cart">Add to cart</button>
-                                                    </div>
-                                                    <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
-                                                    <button title="Add to Compare"><i class="icon-compare"></i></button>
-                                                    <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12" th:each="item, status: ${items.getContent()}">
                                         <div class="product-wrap mb-50">
                                             <div class="product-img product-img-zoom mb-25">
@@ -377,14 +325,6 @@
                                                         <span class="old-price">[[${item.price}]]원</span>
                                                     </div>
                                                 </div>
-                                                <div class="product-action-wrap">
-                                                    <div class="product-action-cart">
-                                                        <button title="Add to Cart" onclick="addCart()">Add to cart</button>
-                                                    </div>
-                                                    <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
-                                                    <button title="Add to Compare"><i class="icon-compare"></i></button>
-                                                    <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -392,63 +332,22 @@
 
                                 </div>
                             </div>
-                            <div id="shop-2" class="tab-pane ">
-                                <div class="shop-list-wrap mb-50">
-                                    <div class="row">
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
-                                            <div class="product-list-img">
-                                                <a href="product-details.html">
-                                                    <img src="/assets/images/product/product-138.jpg" alt="">
-                                                </a>
-                                                <div class="shop-list-quickview">
-                                                    <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-8 col-md-8 col-sm-8">
-                                            <div class="shop-list-content ml-20">
-                                                <h3><a href="#">Product Title Here</a></h3>
-                                                <div class="pro-list-price">
-                                                    <span>$50.00</span>
-                                                    <span class="old-price">$50.00</span>
-                                                </div>
-                                                <p>Composition: 50% cotton,45% polyester, 5% polyamide. Filling: 100% polyester. Hood fur: 64% acrylic,23% modacrylic,13% polyester</p>
-                                                <div class="product-list-action">
-                                                    <button title="Add to Compare"><i class="icon-compare"></i></button>
-                                                    <div class="product-action-cart">
-                                                        <button title="Add to Cart">Add to cart</button>
-                                                    </div>
-                                                    <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div th:with="start=${(items.number/maxPage)*maxPage + 1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})" class="pro-pagination-style text-center mt-5">
+                                <ul  >
 
-                            </div>
-                            <div class="pro-pagination-style text-center mt-50">
-                                <ul>
-                                    <li><a class="active" href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#"><i class="icofont-long-arrow-right"></i></a></li>
-                                </ul>
-                            </div>
-                            <div th:with="start=${(items.number/maxPage)*maxPage + 1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})" >
-                                <ul class="pagination justify-content-center" >
-
-                                    <li class="page-item" th:classappend="${items.number eq 0}?'disabled':''">
-                                        <a th:href="@{'/' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number-1}}" aria-label='Previous' class="page-link">
-                                            <span aria-hidden='true'>Previous</span>
+                                    <li class="" th:classappend="${items.number eq 0}?'disabled':''">
+                                        <a th:href="@{'/' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number-1}}" aria-label='Previous' class="">
+                                            <span aria-hidden='true'><i class="icofont-long-arrow-left"></i></span>
                                         </a>
                                     </li>
 
-                                    <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${items.number eq page-1}?'active':''">
-                                        <a th:href="@{'/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${page-1}}" th:inline="text" class="page-link">[[${page}]]</a>
+                                    <li class="" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${items.number eq page-1}?'active':''">
+                                        <a th:href="@{'/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${page-1}}" th:inline="text" class="active">[[${page}]]</a>
                                     </li>
 
-                                    <li class="page-item" th:classappend="${items.number+1 ge items.totalPages}?'disabled':''">
-                                        <a th:href="@{'/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number+1}}" aria-label='Next' class="page-link">
-                                            <span aria-hidden='true'>Next</span>
+                                    <li class="" th:classappend="${items.number+1 ge items.totalPages}?'disabled':''">
+                                        <a th:href="@{'/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number+1}}" aria-label='Next' class="">
+                                            <span aria-hidden='true'><i class="icofont-long-arrow-right"></i></span>
                                         </a>
                                     </li>
 
@@ -464,13 +363,6 @@
                             <div class="sidebar-widget-categori mt-45">
                                 <ul>
                                     <li><a class="active" href="#">All</a> </li>
-                                    <li><a href="#">Clothing</a> </li>
-                                    <li><a href="#">Shoes</a> </li>
-                                    <li><a href="#">Watches</a> </li>
-                                    <li><a href="#">Jewelry</a> </li>
-                                    <li><a href="#">Accessories</a> </li>
-                                    <li><a href="#"> Big & Tall </a> </li>
-                                    <li><a href="#">Contemporary</a></li>
                                 </ul>
                             </div>
                         </div>

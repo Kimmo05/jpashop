@@ -15,6 +15,7 @@
             color: #bd2130;
         }
     </style>
+
 </th:block>
 
 <!-- 사용자 스크립트 추가 -->
@@ -134,11 +135,11 @@
                 <h2>My Account</h2>
                 <ul>
                     <li>
-                        <a href="index.html">Home </a>
+                        <a href="/">Home </a>
                     </li>
                     <li><span> > </span></li>
                     <li>
-                        <a href="index.html">Product </a>
+                        <a href="/itemMain">Product </a>
                     </li>
                     <li><span> > </span></li>
                     <li class="active"> My Account </li>
@@ -155,33 +156,19 @@
                     <div class="myaccount-page-wrapper">
                         <!-- My Account Tab Menu Start -->
                         <div class="row">
-                            <div class="col-lg-3 col-md-4">
-                                <div class="myaccount-tab-menu nav" role="tablist">
-                                    <a href="#dashboad" class="active" data-toggle="tab">Dashboard</a>
-                                    <a href="#orders" data-toggle="tab"> Orders</a>
-                                    <a href="#download" data-toggle="tab">Download</a>
-                                    <a href="#payment-method" data-toggle="tab"> Payment
-                                        Method</a>
-                                    <a href="#address-edit" data-toggle="tab">address</a>
-                                    <a href="#account-info" data-toggle="tab">Account Details</a>
-                                    <a href="login-register.html">Logout</a>
-                                </div>
-                            </div>
+
                             <!-- My Account Tab Menu End -->
                             <!-- My Account Tab Content Start -->
                             <div class="col-lg-9 col-md-8">
                                 <div class="tab-content" id="myaccountContent">
                                     <!-- Single Tab Content Start -->
                                     <div class="tab-pane fade show active" id="dashboad" role="tabpanel">
-                                        <section>
-                                            <div class="section_caption">
-                                                ADDRESS
-                                            </div>
-                                            <div class="section_content">
+                                        <div class="myaccount-content">
+                                            <h3>Address</h3>
+                                            <div class="account-details-form">
                                                 <form action="./address_ok.html" th:action="@{/main/address/register_ok}" method="POST" onsubmit="return sendit()">
                                                     <table>
                                                         <colgroup>
-                                                            <col width="120px"/>
                                                             <col width="auto"/>
                                                         </colgroup>
                                                         <tr>
@@ -189,23 +176,44 @@
                                                             <td><input type="text" name="placeName" id="address_name"></td>
                                                         </tr>
                                                         <tr>
+                                                            <td>
+                                                                &nbsp
+                                                            </td>
+
+                                                        </tr>
+                                                        <tr>
                                                             <th><label for="address_recipient">성명<span>＊</span></label></th>
                                                             <td><input type="text" name="recipient" id="address_recipient"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                &nbsp
+                                                            </td>
+
                                                         </tr>
                                                         <tr>
                                                             <th><label for="sample6_postcode">주소<span>＊</span></label></th>
                                                             <td>
                                                                 <input type="text" id="sample6_postcode" name="zipcode" placeholder="우편번호">
                                                                 <!-- form 안에 버튼이 있으면 default가 submit이기 때문에 type="button"으로 주어야한다.-->
-                                                                <button type="button" onclick="sample6_execDaumPostcode()" id="postbtn"><span>우편번호</span><i class="fas fa-chevron-right"></i></button><br>
-                                                                <input type="text" id="sample6_address" name="city" placeholder="주소" class="address_margin"> 기본주소<br>
-                                                                <input type="text" id="sample6_detailAddress" name="street" placeholder="상세주소" class="address_margin"> 나머지주소
+                                                                <div class="single-input-item">
+                                                                    <button type="button" onclick="sample6_execDaumPostcode()" id="postbtn" class="check-btn sqr-btn">우편번호</button><br>
+                                                                </div>
+
+                                                                <input type="text" id="sample6_address" name="city" placeholder="주소" class="address_margin">
+                                                                <input type="text" id="sample6_detailAddress" name="street" placeholder="상세주소" class="address_margin" style="margin-top: 10px">
                                                             </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                &nbsp
+                                                            </td>
+
                                                         </tr>
                                                         <tr>
                                                             <th><label for="address_home_number">일반전화<span>＊</span></label></th>
                                                             <td>
-                                                                <select name="addressHomePhoneNumber[]" id="address_home_number" class="address_home_number">
+                                                                <select name="addressHomePhoneNumber[]" id="address_home_number" class="address_home_number" style="width: 31%">
                                                                     <option value="02">02</option>
                                                                     <option value="031">031</option>
                                                                     <option value="032">032</option>
@@ -221,15 +229,21 @@
                                                                     <option value="055">055</option>
                                                                 </select>
                                                                 -
-                                                                <input type="text" name="addressHomePhoneNumber[]" class="address_home_number">
+                                                                <input type="text" name="addressHomePhoneNumber[]" class="address_home_number" style="width: 31%">
                                                                 -
-                                                                <input type="text" name="addressHomePhoneNumber[]" class="address_home_number">
+                                                                <input type="text" name="addressHomePhoneNumber[]" class="address_home_number" style="width: 31%">
                                                             </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                &nbsp
+                                                            </td>
+
                                                         </tr>
                                                         <tr>
                                                             <th><label for="address_phone_number">휴대전화<span>＊</span></label></th>
                                                             <td>
-                                                                <select name="addressPhoneNumber[]" id="address_phone_number" class="address_phone_number">
+                                                                <select name="addressPhoneNumber[]" id="address_phone_number" class="address_phone_number" style="width: 31%">
                                                                     <option value="010">010</option>
                                                                     <option value="011">011</option>
                                                                     <option value="016">016</option>
@@ -238,170 +252,28 @@
                                                                     <option value="019">019</option>
                                                                 </select>
                                                                 -
-                                                                <input type="text" name="addressPhoneNumber[]" class="address_phone_number">
+                                                                <input type="text" name="addressPhoneNumber[]" class="address_phone_number" style="width: 31%">
                                                                 -
-                                                                <input type="text" name="addressPhoneNumber[]" class="address_phone_number">
+                                                                <input type="text" name="addressPhoneNumber[]" class="address_phone_number" style="width: 31%">
                                                             </td>
                                                         </tr>
                                                     </table>
-                                                    <div class="bottombtn_box">
-                                                        <input type="submit" class="registerbtn bottombtn" value="등록">
-                                                        <button class="cancelbtn bottombtn" onclick="location.href=''">취소</button>
+                                                    <br>
+                                                    <br>
+                                                    <div class="single-input-item">
+                                                        <button type="submit" class="check-btn sqr-btn" value="등록">등록</button>
+                                                        <button class="check-btn sqr-btn" onclick="location.href=''">취소</button>
                                                     </div>
                                                 </form>
                                             </div>
-                                        </section>
+                                        </div>
+                                    </div>
+                                    <!-- Single Tab Content End -->
 
-                                    </div>
+
                                     <!-- Single Tab Content End -->
                                     <!-- Single Tab Content Start -->
-                                    <div class="tab-pane fade" id="orders" role="tabpanel">
-                                        <div class="myaccount-content">
-                                            <h3>Orders</h3>
-                                            <div class="myaccount-table table-responsive text-center">
-                                                <table class="table table-bordered">
-                                                    <thead class="thead-light">
-                                                    <tr>
-                                                        <th>Order</th>
-                                                        <th>Date</th>
-                                                        <th>Status</th>
-                                                        <th>Total</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>Aug 22, 2018</td>
-                                                        <td>Pending</td>
-                                                        <td>$3000</td>
-                                                        <td><a href="cart.html" class="check-btn sqr-btn ">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2</td>
-                                                        <td>July 22, 2018</td>
-                                                        <td>Approved</td>
-                                                        <td>$200</td>
-                                                        <td><a href="cart.html" class="check-btn sqr-btn ">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>3</td>
-                                                        <td>June 12, 2017</td>
-                                                        <td>On Hold</td>
-                                                        <td>$990</td>
-                                                        <td><a href="cart.html" class="check-btn sqr-btn ">View</a></td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Single Tab Content End -->
-                                    <!-- Single Tab Content Start -->
-                                    <div class="tab-pane fade" id="download" role="tabpanel">
-                                        <div class="myaccount-content">
-                                            <h3>Downloads</h3>
-                                            <div class="myaccount-table table-responsive text-center">
-                                                <table class="table table-bordered">
-                                                    <thead class="thead-light">
-                                                    <tr>
-                                                        <th>Product</th>
-                                                        <th>Date</th>
-                                                        <th>Expire</th>
-                                                        <th>Download</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr>
-                                                        <td>Haven - Free Real Estate PSD Template</td>
-                                                        <td>Aug 22, 2018</td>
-                                                        <td>Yes</td>
-                                                        <td><a href="#" class="check-btn sqr-btn "><i class="fa fa-cloud-download"></i> Download File</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>HasTech - Profolio Business Template</td>
-                                                        <td>Sep 12, 2018</td>
-                                                        <td>Never</td>
-                                                        <td><a href="#" class="check-btn sqr-btn "><i class="fa fa-cloud-download"></i> Download File</a></td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Single Tab Content End -->
-                                    <!-- Single Tab Content Start -->
-                                    <!-- Single Tab Content End -->
-                                    <!-- Single Tab Content Start -->
-                                    <div class="tab-pane fade" id="address-edit" role="tabpanel">
-                                        <div class="myaccount-content">
-                                            <h3>Billing Address</h3>
-                                            <address>
-                                                <p><strong>Alex Tuntuni</strong></p>
-                                                <p>1355 Market St, Suite 900 <br>
-                                                    San Francisco, CA 94103</p>
-                                                <p>Mobile: (123) 456-7890</p>
-                                            </address>
-                                            <a href="#" class="check-btn sqr-btn "><i class="fa fa-edit"></i> Edit Address</a>
-                                        </div>
-                                    </div>
-                                    <!-- Single Tab Content End -->
-                                    <!-- Single Tab Content Start -->
-                                    <div class="tab-pane fade" id="account-info" role="tabpanel">
-                                        <div class="myaccount-content">
-                                            <h3>Account Details</h3>
-                                            <div class="account-details-form">
-                                                <form action="#">
-                                                    <div class="row">
-                                                        <div class="col-lg-6">
-                                                            <div class="single-input-item">
-                                                                <label for="first-name" class="required">First Name</label>
-                                                                <input type="text" id="first-name" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <div class="single-input-item">
-                                                                <label for="last-name" class="required">Last Name</label>
-                                                                <input type="text" id="last-name" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-input-item">
-                                                        <label for="display-name" class="required">Display Name</label>
-                                                        <input type="text" id="display-name" />
-                                                    </div>
-                                                    <div class="single-input-item">
-                                                        <label for="email" class="required">Email Addres</label>
-                                                        <input type="email" id="email" />
-                                                    </div>
-                                                    <fieldset>
-                                                        <legend>Password change</legend>
-                                                        <div class="single-input-item">
-                                                            <label for="current-pwd" class="required">Current Password</label>
-                                                            <input type="password" id="current-pwd" />
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-lg-6">
-                                                                <div class="single-input-item">
-                                                                    <label for="new-pwd" class="required">New Password</label>
-                                                                    <input type="password" id="new-pwd" />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-6">
-                                                                <div class="single-input-item">
-                                                                    <label for="confirm-pwd" class="required">Confirm Password</label>
-                                                                    <input type="password" id="confirm-pwd" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </fieldset>
-                                                    <div class="single-input-item">
-                                                        <button class="check-btn sqr-btn ">Save Changes</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div> <!-- Single Tab Content End -->
+
                                 </div>
                             </div> <!-- My Account Tab Content End -->
                         </div>

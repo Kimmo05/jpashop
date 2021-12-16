@@ -22,9 +22,13 @@
                                         <i class="icofont-close-line s-close"></i>
                                     </a>
                                     <div class="search-wrap-3">
-                                        <form th:action="@{/}">
-                                            <input placeholder="Search here..." type="text">
-                                            <button class="button-search"><i class="icofont-search-1"></i></button>
+                                        <form class="form-inline my-2 my-lg-0" th:action="@{/}" method="get">
+                                            <div class="form-search-1">
+                                                <input class="input-text" value="" placeholder="Type to search (Ex: Phone, Laptop)" type="search" name="searchQuery">
+                                                <button type="submit">
+                                                    <i class="icofont-search-1"></i>
+                                                </button>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -52,7 +56,7 @@
                                 </div>
 
                                 <div class="same-style header-cart">
-                                    <a  href="/cart"><i class="icofont-shopping-cart"></i></a>
+                                    <a  href="/cart" sec:authorize="isAuthenticated()"><i class="icofont-shopping-cart"></i></a>
                                 </div>
                                 <div class="same-style header-info">
                                     <button class="sidebar-active">
@@ -79,7 +83,7 @@
                         <div class="col-6">
                             <div class="header-action-wrap header-action-flex header-action-mrg-1">
                                 <div class="same-style header-cart">
-                                    <a class="cart-active" href="#"><i class="icofont-shopping-cart"></i></a>
+                                    <a class="cart-active" href="/cart"  sec:authorize="isAuthenticated()"><i class="icofont-shopping-cart"></i></a>
                                 </div>
                                 <div class="same-style header-info">
                                     <button class="mobile-menu-button-active">
@@ -100,123 +104,21 @@
                 <div class="clickable-mainmenu-wrap clickable-mainmenu-style1 sidebar-content-100-percent">
                     <nav>
                         <ul>
-                            <li class="has-sub-menu"><a href="#">Home</a>
-                                <ul class="sub-menu-2">
-                                    <li class="has-sub-menu"><a href="#">Demo Group #01</a>
-                                        <ul class="sub-menu-2">
-                                            <li><a href="index.html">Home Multipurpose</a></li>
-                                            <li><a href="index-megashop.html">Home Mega Shop</a></li>
-
-                                        </ul>
-                                    </li>
-                                    <li class="has-sub-menu"><a href="#">Demo Group #02</a>
-                                        <ul class="sub-menu-2">
-                                            <li><a href="index-electric-2.html">Home Electric 2</a></li>
-                                            <li><a href="index-handcraft.html">Home Hand Craft</a></li>
-
-                                        </ul>
-                                    </li>
-                                    <li class="has-sub-menu"><a href="#">Demo Group #03</a>
-                                        <ul class="sub-menu-2">
-                                            <li><a href="index-flower.html">Home Flower</a></li>
-                                            <li><a href="index-treeplant.html">Home Tree plant</a></li>
-
-                                        </ul>
-                                    </li>
-                                </ul>
+                            <li class="has-sub-menu"><a href="/">Home</a>
                             </li>
-                            <li class="has-sub-menu"><a href="#">shop</a>
-                                <ul class="sub-menu-2">
-                                    <li class="has-sub-menu"><a href="#">Shop Layout</a>
-                                        <ul class="sub-menu-2">
-                                            <li><a href="shop.html">Shop Grid Style 1</a></li>
-                                            <li><a href="shop-2.html">Shop Grid Style 2</a></li>
-                                            <li><a href="shop-3.html">Shop Grid Style 3</a></li>
-
-                                        </ul>
-                                    </li>
-                                    <li class="has-sub-menu"><a href="#">Product Layout</a>
-                                        <ul class="sub-menu-2">
-                                            <li><a href="product-details.html">Product Layout 1</a></li>
-                                            <li><a href="product-details-2.html">Product Layout 2</a></li>
-                                            <li><a href="product-details-3.html">Product Layout 3</a></li>
-
-                                        </ul>
-                                    </li>
-                                    <li class="has-sub-menu"><a href="#">Shop Page</a>
-                                        <ul class="sub-menu-2">
-                                            <li><a href="my-account.html">My Account</a></li>
-                                            <li><a href="checkout.html">Check Out</a></li>
-
-                                        </ul>
-                                    </li>
-                                </ul>
+                            <li ><a href="/itemMain">상품 목록</a>
                             </li>
-                            <li class="has-sub-menu"><a href="#">Pages</a>
-                                <ul class="sub-menu-2">
-                                    <li><a href="about-us.html">About Us</a></li>
-                                    <li><a href="contact-us.html">Contact Us</a></li>
-                                    <li><a href="contact-us-2.html">Contact Us 2</a></li>
-                                    <li><a href="404.html">404 Page</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="shop.html">Collections</a></li>
-                            <li class="has-sub-menu"><a href="#">Blog</a>
-                                <ul class="sub-menu-2">
-                                    <li><a href="blog.html">Blog Page</a></li>
-                                    <li><a href="blog-no-sidebar.html">Blog No sidebar</a></li>
-                                    <li><a href="blog-right-sidebar.html">Blog Right Sidebar</a></li>
-                                    <li><a href="blog-details.html">Blog Details</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="contact-us.html">Contact</a></li>
+                            <li><a href="/members/mypage">마이페이지</a></li>
+                            <li><a href="/cart">장바구니</a></li>
+
+                            <li><a href="/members/logout">로그아웃</a></li>
                         </ul>
                     </nav>
                 </div>
             </div>
         </div>
         <!-- mini cart start -->
-        <div class="sidebar-cart-active">
-            <div class="sidebar-cart-all">
-                <a class="cart-close" href="#"><i class="icofont-close-line"></i></a>
-                <div class="cart-content">
-                    <h3>Shopping Cart</h3>
-                    <ul>
-                        <li class="single-product-cart">
-                            <div class="cart-img">
-                                <a href="#"><img src="/assets/images/cart/cart-1.jpg" alt=""></a>
-                            </div>
-                            <div class="cart-title">
-                                <h4><a href="#">Awesome Mobile</a></h4>
-                                <span> 1 × $49.00	</span>
-                            </div>
-                            <div class="cart-delete">
-                                <a href="#">×</a>
-                            </div>
-                        </li>
-                        <li class="single-product-cart">
-                            <div class="cart-img">
-                                <a href="#"><img src="/assets/images/cart/cart-2.jpg" alt=""></a>
-                            </div>
-                            <div class="cart-title">
-                                <h4><a href="#">Smart Watch</a></h4>
-                                <span> 1 × $49.00	</span>
-                            </div>
-                            <div class="cart-delete">
-                                <a href="#">×</a>
-                            </div>
-                        </li>
-                    </ul>
-                    <div class="cart-total">
-                        <h4>Subtotal: <span>$170.00</span></h4>
-                    </div>
-                    <div class="cart-checkout-btn">
-                        <a class="btn-hover cart-btn-style" href="cart.html">view cart</a>
-                        <a class="no-mrg btn-hover cart-btn-style" href="checkout.html">checkout</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+
         <!-- Mobile menu start -->
         <div class="mobile-menu-active clickalbe-sidebar-wrapper-style-1">
             <div class="clickalbe-sidebar-wrap">
@@ -232,90 +134,19 @@
                         <nav>
                             <ul>
                                 <li class="has-sub-menu"><a href="/">Home</a>
-                                    <ul class="sub-menu-2">
-                                        <li class="has-sub-menu"><a href="#">Demo Group #01</a>
-                                            <ul class="sub-menu-2">
-                                                <li><a href="/">Home Multipurpose</a></li>
-                                                <li><a href="index-megashop.html">Home Mega Shop</a></li>
-
-                                            </ul>
-                                        </li>
-                                        <li class="has-sub-menu"><a href="#">Demo Group #02</a>
-                                            <ul class="sub-menu-2">
-                                                <li><a href="index-electric-2.html">Home Electric 2</a></li>
-                                                <li><a href="index-handcraft.html">Home Hand Craft</a></li>
-
-                                            </ul>
-                                        </li>
-                                        <li class="has-sub-menu"><a href="#">Demo Group #03</a>
-                                            <ul class="sub-menu-2">
-                                                <li><a href="index-flower.html">Home Flower</a></li>
-                                                <li><a href="index-treeplant.html">Home Tree plant</a></li>
-
-                                            </ul>
-                                        </li>
-                                    </ul>
                                 </li>
-                                <li class="has-sub-menu"><a href="#">shop</a>
-                                    <ul class="sub-menu-2">
-                                        <li class="has-sub-menu"><a href="#">Shop Layout</a>
-                                            <ul class="sub-menu-2">
-                                                <li><a href="shop.html">Shop Grid Style 1</a></li>
-                                                <li><a href="shop-2.html">Shop Grid Style 2</a></li>
-                                                <li><a href="shop-3.html">Shop Grid Style 3</a></li>
+                                <li class="has-sub-menu"><a href="/itemMain">상품 목록</a>
 
-                                            </ul>
-                                        </li>
-                                        <li class="has-sub-menu"><a href="#">Product Layout</a>
-                                            <ul class="sub-menu-2">
-                                                <li><a href="product-details.html">Product Layout 1</a></li>
-                                                <li><a href="product-details-2.html">Product Layout 2</a></li>
+                                </li>
 
-                                            </ul>
-                                        </li>
-                                        <li class="has-sub-menu"><a href="#">Shop Page</a>
-                                            <ul class="sub-menu-2">
-                                                <li><a href="my-account.html">My Account</a></li>
-                                                <li><a href="checkout.html">Check Out</a></li>
-                                                <li><a href="cart.html">Shopping Cart</a></li>
+                                <li><a href="/members/mypage">마이페이지</a></li>
+                                <li><a href="/cart">장바구니</a></li>
 
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="has-sub-menu"><a href="#">Pages</a>
-                                    <ul class="sub-menu-2">
-                                        <li><a href="about-us.html">About Us</a></li>
-                                        <li><a href="contact-us.html">Contact Us</a></li>
-                                        <li><a href="contact-us-2.html">Contact Us 2</a></li>
-                                        <li><a href="404.html">404 Page</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="shop.html">Collections</a></li>
-                                <li class="has-sub-menu"><a href="#">Blog</a>
-                                    <ul class="sub-menu-2">
-                                        <li><a href="blog.html">Blog Page</a></li>
-                                        <li><a href="blog-no-sidebar.html">Blog No sidebar</a></li>
-                                        <li><a href="blog-right-sidebar.html">Blog Right Sidebar</a></li>
-                                        <li><a href="blog-details.html">Blog Details</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="contact-us.html">Contact</a></li>
+                                <li><a href="/members/logout">로그아웃</a></li>
                             </ul>
                         </nav>
                     </div>
-                    <div class="mobile-curr-lang-wrap">
-                        <div class="single-mobile-curr-lang">
-                            <a class="mobile-language-active" href="#">Language <i class="icofont-simple-down"></i></a>
-                            <div class="lang-curr-dropdown lang-dropdown-active">
-                                <ul>
-                                    <li><a href="#">English</a></li>
-                                    <li><a href="#">Spanish</a></li>
-                                    <li><a href="#">Hindi </a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="aside-contact-info">
                         <ul>
                             <li><i class="icofont-clock-time"></i>Monday - Friday: 9:00 - 19:00</li>

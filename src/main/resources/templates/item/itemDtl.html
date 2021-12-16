@@ -185,7 +185,7 @@
                     <div class="col-xl-7 col-lg-12 col-md-12">
                         <div class="pro-details-9-img pro-details-img-zoom">
 
-                            <img th:src="${item.itemImgDtoList[0].imgUrl}"  th:alt="${item.itemNm}" style="width: 270px;height: 360px; margin-left: 500px">
+                            <img th:src="${item.itemImgDtoList[0].imgUrl}"  th:alt="${item.itemNm}" style="width: 270px;height: 360px; margin-left: 250px">
 
                         </div>
                     </div>
@@ -218,8 +218,8 @@
 
                                 <div class="product-details-meta">
                                     <ul>
-                                        <li><span>Model:</span> <a href="#">Odsy-1000</a></li>
-                                        <li><span>Ship To</span> <a href="#">2834 Laurel Lane</a>, <a href="#">Mentone</a> , <a href="#">Texas</a></li>
+                                        <li><span>Model:</span> <a href="#">가구</a></li>
+
                                         <li><span>Total:</span>  <h3 name="totalPrice" id="totalPrice" class="font-weight-bold"></h3></li>
 
                                     </ul>
@@ -227,8 +227,12 @@
                             </div>
                             &nbsp;
                             <div class="pro-details-action-wrap">
-                                <div class="pro-details-buy-now">
-                                    <a href="/cart/payment">Buy Now</a>
+                                <div class="pro-details-buy-now" >
+                                    <a onclick="addCart2()">Buy Now</a>
+
+                                </div>
+                                <div class="pro-details-buy-now" th:unless="${item.itemSellStatus == T(kr.co.pjshop.constant.ItemSellStatus).SELL}" >
+                                    <a>품절</a>
 
                                 </div>
                                 <div class="pro-details-action">

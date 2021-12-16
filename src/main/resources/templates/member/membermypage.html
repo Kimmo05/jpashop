@@ -3,7 +3,10 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/mainlayout2}">
-
+<head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
 <!-- 사용자 CSS 추가 -->
 <th:block layout:fragment="css">
     <style>
@@ -36,6 +39,8 @@
 
 <!-- 사용자 스크립트 추가 -->
 <th:block layout:fragment="script">
+
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="/assets/js/vendor/jquery-v3.6.0.min.js"></script>
     <script th:inline="javascript">
         $(document).ready(function(){
@@ -160,7 +165,7 @@
                     const user_pw_temp = $('#user_password').val();
                     $.ajax({
                         type: 'DELETE',
-                        url: '/main/withdrawal',
+                        url: '/members/main/withdrawal',
                         data: {user_pw : user_pw_temp},
                         beforeSend : function(xhr)
                         {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
@@ -169,7 +174,7 @@
                     }).done(function(word){
                         alert(word); //정상적으로 회원탈퇴 되었습니다. or 비밀번호가 올바르지 않습니다.
                         if(word.charAt(0) == "정"){
-                            location.href='/main/index';
+                            location.href='/';
                         }
                     }).fail(function (error){
                         alert(JSON.stringify(error));
@@ -177,6 +182,54 @@
                 }
             })
         })
+
+        function sample6_execDaumPostcode() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                    // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                    // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                    var addr = ''; // 주소 변수
+                    var extraAddr = ''; // 참고항목 변수
+
+                    //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                        addr = data.roadAddress;
+                    } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                        addr = data.jibunAddress;
+                    }
+
+                    // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                    if(data.userSelectedType === 'R'){
+                        // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                        // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                        if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                            extraAddr += data.bname;
+                        }
+                        // 건물명이 있고, 공동주택일 경우 추가한다.
+                        if(data.buildingName !== '' && data.apartment === 'Y'){
+                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                        if(extraAddr !== ''){
+                            extraAddr = ' (' + extraAddr + ')';
+                        }
+                        // 조합된 참고항목을 해당 필드에 넣는다.
+                        document.getElementById("sample6_detailAddress").value = extraAddr;
+
+                    } else {
+                        document.getElementById("sample6_detailAddress").value = '';
+                    }
+
+                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                    document.getElementById('sample6_postcode').value = data.zonecode;
+                    document.getElementById("sample6_address").value = addr;
+                    // 커서를 상세주소 필드로 이동한다.
+                    document.getElementById("sample6_detailAddress").focus();
+                }
+            }).open();
+        }
     </script>
 
 </th:block>
@@ -189,11 +242,11 @@
                 <h2>My Account</h2>
                 <ul>
                     <li>
-                        <a href="index.html">Home </a>
+                        <a href="/">Home </a>
                     </li>
                     <li><span> > </span></li>
                     <li>
-                        <a href="index.html">Product </a>
+                        <a href="/itemMain">Product </a>
                     </li>
                     <li><span> > </span></li>
                     <li class="active"> My Account </li>
@@ -216,7 +269,7 @@
                                     <a href="#dashboad" class="active" data-toggle="tab">내 정보</a>
                                     <a href="#orders" data-toggle="tab"> 주문내역</a>
                                     <a href="#download" data-toggle="tab">내 정보 수정</a>
-                                    <a href="#address-edit" data-toggle="tab">배송지</a>
+                                    <a href="/main/address" >배송지</a>
 
                                     <a href="/members/logout">Logout</a>
                                 </div>
@@ -281,18 +334,18 @@
                                                 <ul class="pagination justify-content-center">
 
                                                     <li class="page-item" th:classappend="${orders.number eq 0}?'disabled':''">
-                                                        <a th:href="@{'/orders/' + ${orders.number-1}}" aria-label='Previous' class="page-link">
-                                                            <span aria-hidden='true'>Previous</span>
+                                                        <a th:href="@{'/orders/' + ${orders.number-1}}" aria-label='Previous' class="btn btn-outline-secondary">
+                                                            <span aria-hidden='true'><</span>
                                                         </a>
                                                     </li>
 
-                                                    <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${orders.number eq page-1}?'active':''">
-                                                        <a th:href="@{'/orders/' + ${page-1}}" th:inline="text" class="page-link">[[${page}]]</a>
+                                                    <li class="btn-outline-secondary" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${orders.number eq page-1}?'active':''">
+                                                        <a th:href="@{'/orders/' + ${page-1}}" th:inline="text" class="btn btn-outline-secondary" >[[${page}]]</a>
                                                     </li>
 
                                                     <li class="page-item" th:classappend="${orders.number+1 ge orders.totalPages}?'disabled':''">
-                                                        <a th:href="@{'/orders/' + ${orders.number+1}}" aria-label='Next' class="page-link">
-                                                            <span aria-hidden='true'>Next</span>
+                                                        <a th:href="@{'/orders/' + ${orders.number+1}}" aria-label='Next' class="btn btn-outline-secondary">
+                                                            <span aria-hidden='true'>></span>
                                                         </a>
                                                     </li>
 
@@ -305,116 +358,162 @@
                                     <div class="tab-pane fade" id="download" role="tabpanel">
                                         <div class="myaccount-content">
                                             <h3>내 정보 수정</h3>
-                                            <div class="myaccount-table table-responsive text-center">
+                                            <div class="account-details-form">
                                                 <form action="" method="POST" onsubmit="return sendit()">
                                                     <input type="hidden" name="_method" value="put">
                                                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                                                <table class="table table-bordered">
+                                                    <table>
 
-                                                    <tbody>
-                                                    <colgroup>
-                                                        <col width="120px"/>
-                                                        <col width="auto"/>
-                                                    </colgroup>
-                                                    <tr>
-                                                        <th><label for="user_id">아이디<span>＊</span></label></th>
-                                                        <td><input type="text" name="loginId" id="user_id" th:value="${member.loginId}" readonly></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th><label for="user_password">비밀번호<span>＊</span></label></th>
-                                                        <td><input type="password" name="password" id="user_password">&nbsp; (영문 대소문자/숫자/특수문자 중2가지 이상 조합, 10~16자)</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th><label for="user_password_ok">비밀번호확인<span>＊</span></label></th>
-                                                        <td><input type="password" id="user_password_ok"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th><label for="user_name">이름<span>＊</span></label></th>
-                                                        <td><input type="text" name="name" id="user_name" th:value="${member.name}" readonly></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th><label for="sample6_postcode">주소<span>＊</span></label></th>
-                                                        <td>
-                                                            <input type="text" id="sample6_postcode" name="zipcode" placeholder="우편번호" th:value="${member.zipcode}">
-                                                            <button type="button" onclick="sample6_execDaumPostcode()" id="postbtn"><span>우편번호</span><i class="fas fa-chevron-right"></i></button><br>
-                                                            <input type="text" id="sample6_address" name="street" placeholder="주소" class="address_margin" th:value="${member.city}"> 기본주소<br>
-                                                            <input type="text" id="sample6_detailAddress" name="city" placeholder="상세주소" class="address_margin" th:value="${member.street}"> 나머지주소
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th><label for="home_number">일반전화</label></th>
-                                                        <td>
-                                                            <select name="homePhoneNumber" id="home_number" class="home_number">
-                                                                <option value="02" th:selected="${#strings.equals( member.homePhoneNumber[0], '02' )}">02</option>
-                                                                <option value="031" th:selected="${#strings.equals( member.homePhoneNumber[0], '031' )}">031</option>
-                                                                <option value="032" th:selected="${#strings.equals( member.homePhoneNumber[0], '032' )}">032</option>
-                                                                <option value="033" th:selected="${#strings.equals( member.homePhoneNumber[0], '033' )}">033</option>
-                                                                <option value="041" th:selected="${#strings.equals( member.homePhoneNumber[0], '041' )}">041</option>
-                                                                <option value="042" th:selected="${#strings.equals( member.homePhoneNumber[0], '042' )}">042</option>
-                                                                <option value="043" th:selected="${#strings.equals( member.homePhoneNumber[0], '043' )}">043</option>
-                                                                <option value="044" th:selected="${#strings.equals( member.homePhoneNumber[0], '044' )}">044</option>
-                                                                <option value="051" th:selected="${#strings.equals( member.homePhoneNumber[0], '051' )}">051</option>
-                                                                <option value="052" th:selected="${#strings.equals( member.homePhoneNumber[0], '052' )}">052</option>
-                                                                <option value="053" th:selected="${#strings.equals( member.homePhoneNumber[0], '053' )}">053</option>
-                                                                <option value="054" th:selected="${#strings.equals( member.homePhoneNumber[0], '054' )}">054</option>
-                                                                <option value="055" th:selected="${#strings.equals( member.homePhoneNumber[0], '055' )}">055</option>
-                                                            </select>
-                                                            -
-                                                            <input th:if="${#lists.size(member.homePhoneNumber) >= 2}" type="text" name="homePhoneNumber" class="home_number" th:value="${member.homePhoneNumber[1]}">
-                                                            <input th:if="${#lists.size(member.homePhoneNumber) < 2}" type="text" name="homePhoneNumber" class="home_number">
-                                                            -
-                                                            <input th:if="${#lists.size(member.homePhoneNumber) >= 2}" type="text" name="homePhoneNumber" class="home_number" th:value="${member.homePhoneNumber[2]}">
-                                                            <input th:if="${#lists.size(member.homePhoneNumber) < 2}" type="text" name="homePhoneNumber" class="home_number">
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th><label for="phone_number">휴대전화<span>＊</span></label></th>
-                                                        <td>
-                                                            <select name="phoneNumber" id="phone_number" class="phone_number">
-                                                                <option value="010" th:selected="${#strings.equals( member.phoneNumber[0], '010' )}">010</option>
-                                                                <option value="011" th:selected="${#strings.equals( member.phoneNumber[0], '011' )}">011</option>
-                                                                <option value="016" th:selected="${#strings.equals( member.phoneNumber[0], '016' )}">016</option>
-                                                                <option value="017" th:selected="${#strings.equals( member.phoneNumber[0], '017' )}">017</option>
-                                                                <option value="018" th:selected="${#strings.equals( member.phoneNumber[0], '018' )}">018</option>
-                                                                <option value="019" th:selected="${#strings.equals( member.phoneNumber[0], '019' )}">019</option>
-                                                            </select>
-                                                            -
-                                                            <input type="text" name="phoneNumber" class="phone_number" th:value="${member.phoneNumber[1]}">
-                                                            -
-                                                            <input type="text" name="phoneNumber" class="phone_number" th:value="${member.phoneNumber[2]}">
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th><label for="email">이메일<span>＊</span></label></th>
-                                                        <td><input type="text" name="email" id="email" th:value="${member.email}"></td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                                    <div class="additionaldata_caption">추가정보</div>
-                                                    <table class="additionaldata">
+                                                        <tbody>
                                                         <colgroup>
-                                                            <col width="120px"/>
                                                             <col width="auto"/>
                                                         </colgroup>
                                                         <tr>
+                                                            <th><label for="user_id">아이디<span>＊</span></label></th>
+                                                            <td><input type="text" name="loginId" id="user_id" th:value="${member.loginId}" readonly></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                &nbsp
+                                                            </td>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <th><label for="user_password">비밀번호<span>＊</span></label></th>
+                                                            <td><input type="password" name="password" id="user_password">&nbsp; (영문 대소문자/숫자/특수문자 중2가지 이상 조합, 10~16자)</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                &nbsp
+                                                            </td>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <th><label for="user_password_ok">비밀번호확인<span>＊</span></label></th>
+                                                            <td><input type="password" id="user_password_ok"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                &nbsp
+                                                            </td>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <th><label for="user_name">이름<span>＊</span></label></th>
+                                                            <td><input type="text" name="name" id="user_name" th:value="${member.name}" readonly></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                &nbsp
+                                                            </td>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <th><label for="sample6_postcode">주소<span>＊</span></label></th>
+                                                            <td>
+                                                                <input type="text" id="sample6_postcode" name="zipcode" placeholder="우편번호" th:value="${member.zipcode}">
+                                                                <div class="single-input-item">
+                                                                    <button type="button" onclick="sample6_execDaumPostcode()" id="postbtn" class="check-btn sqr-btn">우편번호</button>
+                                                                </div>
+                                                                <input type="text" id="sample6_address" name="street" placeholder="주소" class="address_margin" th:value="${member.city}">
+                                                                <input type="text" id="sample6_detailAddress" name="city" placeholder="상세주소" class="address_margin" th:value="${member.street}" style="margin-top: 10px">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                &nbsp
+                                                            </td>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <th><label for="home_number">일반전화</label></th>
+                                                            <td>
+                                                                <select name="homePhoneNumber" id="home_number" class="home_number" style="width: 31%">
+                                                                    <option value="02" th:selected="${#strings.equals( member.homePhoneNumber[0], '02' )}">02</option>
+                                                                    <option value="031" th:selected="${#strings.equals( member.homePhoneNumber[0], '031' )}">031</option>
+                                                                    <option value="032" th:selected="${#strings.equals( member.homePhoneNumber[0], '032' )}">032</option>
+                                                                    <option value="033" th:selected="${#strings.equals( member.homePhoneNumber[0], '033' )}">033</option>
+                                                                    <option value="041" th:selected="${#strings.equals( member.homePhoneNumber[0], '041' )}">041</option>
+                                                                    <option value="042" th:selected="${#strings.equals( member.homePhoneNumber[0], '042' )}">042</option>
+                                                                    <option value="043" th:selected="${#strings.equals( member.homePhoneNumber[0], '043' )}">043</option>
+                                                                    <option value="044" th:selected="${#strings.equals( member.homePhoneNumber[0], '044' )}">044</option>
+                                                                    <option value="051" th:selected="${#strings.equals( member.homePhoneNumber[0], '051' )}">051</option>
+                                                                    <option value="052" th:selected="${#strings.equals( member.homePhoneNumber[0], '052' )}">052</option>
+                                                                    <option value="053" th:selected="${#strings.equals( member.homePhoneNumber[0], '053' )}">053</option>
+                                                                    <option value="054" th:selected="${#strings.equals( member.homePhoneNumber[0], '054' )}">054</option>
+                                                                    <option value="055" th:selected="${#strings.equals( member.homePhoneNumber[0], '055' )}">055</option>
+                                                                </select>
+                                                                -
+                                                                <input th:if="${#lists.size(member.homePhoneNumber) >= 2}" type="text" name="homePhoneNumber" class="home_number" th:value="${member.homePhoneNumber[1]}" style="width: 31%">
+                                                                <input th:if="${#lists.size(member.homePhoneNumber) < 2}" type="text" name="homePhoneNumber" class="home_number" style="width: 31%">
+                                                                -
+                                                                <input th:if="${#lists.size(member.homePhoneNumber) >= 2}" type="text" name="homePhoneNumber" class="home_number" th:value="${member.homePhoneNumber[2]}" style="width: 31%">
+                                                                <input th:if="${#lists.size(member.homePhoneNumber) < 2}" type="text" name="homePhoneNumber" class="home_number" style="width: 31%">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                &nbsp
+                                                            </td>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <th><label for="phone_number">휴대전화<span>＊</span></label></th>
+                                                            <td>
+                                                                <select name="phoneNumber" id="phone_number" class="phone_number" style="width: 31%">
+                                                                    <option value="010" th:selected="${#strings.equals( member.phoneNumber[0], '010' )}">010</option>
+                                                                    <option value="011" th:selected="${#strings.equals( member.phoneNumber[0], '011' )}">011</option>
+                                                                    <option value="016" th:selected="${#strings.equals( member.phoneNumber[0], '016' )}">016</option>
+                                                                    <option value="017" th:selected="${#strings.equals( member.phoneNumber[0], '017' )}">017</option>
+                                                                    <option value="018" th:selected="${#strings.equals( member.phoneNumber[0], '018' )}">018</option>
+                                                                    <option value="019" th:selected="${#strings.equals( member.phoneNumber[0], '019' )}">019</option>
+                                                                </select>
+                                                                -
+                                                                <input type="text" name="phoneNumber" class="phone_number" th:value="${member.phoneNumber[1]}" style="width: 31%">
+                                                                -
+                                                                <input type="text" name="phoneNumber" class="phone_number" th:value="${member.phoneNumber[2]}" style="width: 31%">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                &nbsp
+                                                            </td>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <th><label for="email">이메일<span>＊</span></label></th>
+                                                            <td><input type="text" name="email" id="email" th:value="${member.email}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                &nbsp
+                                                            </td>
+
+                                                        </tr>
+                                                        </tbody>
+
+                                                        <tr>
                                                             <th><label for="birth_year">생년월일</label></th>
                                                             <td>
-                                                                <input th:if="${#lists.size(member.birthday) >= 2}" type="text" name="birthday" id="birth_year" th:value="${member.birthday[0]}">
-                                                                <input th:if="${#lists.size(member.birthday) < 2}" type="text" name="birthday" id="birth_year">
-                                                                년&nbsp;&nbsp;&nbsp;
-                                                                <input th:if="${#lists.size(member.birthday) >= 2}" type="text" name="birthday" id="birth_month" th:value="${member.birthday[1]}">
-                                                                <input th:if="${#lists.size(member.birthday) < 2}" type="text" name="birthday" id="birth_month">
-                                                                월&nbsp;&nbsp;&nbsp;
-                                                                <input th:if="${#lists.size(member.birthday) >= 2}" type="text" name="birthday" id="birth_date" th:value="${member.birthday[2]}">
-                                                                <input th:if="${#lists.size(member.birthday) < 2}" type="text" name="birthday" id="birth_date">
-                                                                일
+                                                                <input th:if="${#lists.size(member.birthday) >= 2}" type="text" name="birthday" id="birth_year" th:value="${member.birthday[0]}" placeholder="년" style="width: 31%">
+                                                                <input th:if="${#lists.size(member.birthday) < 2}" type="text" name="birthday" id="birth_year" placeholder="년" style="width: 31%">
+                                                                /
+                                                                <input th:if="${#lists.size(member.birthday) >= 2}" type="text" name="birthday" id="birth_month" th:value="${member.birthday[1]}" placeholder="월" style="width: 31%">
+                                                                <input th:if="${#lists.size(member.birthday) < 2}" type="text" name="birthday" id="birth_month" placeholder="월" style="width: 31%">
+                                                                /
+                                                                <input th:if="${#lists.size(member.birthday) >= 2}" type="text" name="birthday" id="birth_date" th:value="${member.birthday[2]}" placeholder="일" style="width: 31%">
+                                                                <input th:if="${#lists.size(member.birthday) < 2}" type="text" name="birthday" id="birth_date" placeholder="일" style="width: 31%">
+
                                                             </td>
                                                         </tr>
                                                     </table>
-                                                    <div class="bottombtn_box">
-                                                        <input type="submit" class="registerbtn bottombtn" value="회원정보수정" formaction="/update">
+                                                    <br>
+                                                    <br>
+
+                                                    <div class="bottombtn_box " >
+                                                        <input type="submit" class="registerbtn bottombtn " value="회원정보수정" formaction="/members/update" style="width: 20%">
+                                                        <input type="button" class="withdrawbtn bottombtn" value="회원탈퇴" formaction="/withdraw"  style="width: 20%">
                                                         <button class="cancelbtn bottombtn" onclick="location.href=''">취소</button>
-                                                        <input type="button" class="withdrawbtn bottombtn" value="회원탈퇴" formaction="/withdraw">
                                                     </div>
                                                 </form>
                                             </div>
@@ -430,18 +529,7 @@
                                     </div>
                                     <!-- Single Tab Content End -->
                                     <!-- Single Tab Content Start -->
-                                    <div class="tab-pane fade" id="address-edit" role="tabpanel">
-                                        <div class="myaccount-content">
-                                            <h3>Billing Address</h3>
-                                            <address>
-                                                <p><strong>Alex Tuntuni</strong></p>
-                                                <p>1355 Market St, Suite 900 <br>
-                                                    San Francisco, CA 94103</p>
-                                                <p>Mobile: (123) 456-7890</p>
-                                            </address>
-                                            <a href="#" class="check-btn sqr-btn "><i class="fa fa-edit"></i> Edit Address</a>
-                                        </div>
-                                    </div>
+
                                     <!-- Single Tab Content End -->
                                     <!-- Single Tab Content Start -->
                                     <div class="tab-pane fade" id="account-info" role="tabpanel">

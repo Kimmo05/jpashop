@@ -24,10 +24,10 @@
 
                                             </li>
 
-                                            <li><a href="/members/mypage">마이페이지</a></li>
-                                            <li><a href="/cart">장바구니</a></li>
+                                            <li><a href="/members/mypage" sec:authorize="isAuthenticated()">마이페이지</a></li>
+                                            <li><a href="/cart" sec:authorize="isAuthenticated()">장바구니</a></li>
 
-                                            <li><a href="/members/logout">로그아웃</a></li>
+                                            <li><a href="/members/logout" sec:authorize="isAuthenticated()">로그아웃</a></li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -36,7 +36,7 @@
                                 <div class="search-style-1">
                                     <form class="form-inline my-2 my-lg-0" th:action="@{/itemMain}" method="get">
                                         <div class="form-search-1">
-                                            <input class="input-text" value="" placeholder="Type to search (Ex: Phone, Laptop)" type="search" name="searchQuery">
+                                            <input class="input-text" value="" placeholder="Search here..." type="search" name="searchQuery">
                                             <button type="submit">
                                                 <i class="icofont-search-1"></i>
                                             </button>

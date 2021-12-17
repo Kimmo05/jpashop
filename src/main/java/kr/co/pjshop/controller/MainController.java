@@ -28,8 +28,13 @@ public class MainController {
     private final MileageServiceImpl mileageServiceImpl;
     private final DeliveryAddressServiceImpl deliveryAddressServiceImpl;
     @GetMapping(value = "/admin/main")
-    public String main(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model){
-
+    public String main(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model,
+                       @PageableDefault(size = 4) Pageable pageable){
+        MemberPageDto memberPageDto = new MemberPageDto();
+        Page<MemberDto> memberBoards = memberPageDto.getMemberBoards();
+        model.addAttribute("memberList", memberBoards);
+        int allVisitCount = memberServiceImpl.getVisitCount();
+        model.addAttribute("numVisitors", allVisitCount);
         return "admin_main";
     }
 

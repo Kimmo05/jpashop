@@ -185,7 +185,7 @@
                     <div class="col-xl-7 col-lg-12 col-md-12">
                         <div class="pro-details-9-img pro-details-img-zoom">
 
-                            <img th:src="${item.itemImgDtoList[0].imgUrl}"  th:alt="${item.itemNm}" style="width: 270px;height: 360px; margin-left: 250px">
+                            <img th:src="${item.itemImgDtoList[0].imgUrl}"  th:alt="${item.itemNm}" style="width: 270px;height: 360px; margin-left: 150px">
 
                         </div>
                     </div>
@@ -227,7 +227,7 @@
                             </div>
                             &nbsp;
                             <div class="pro-details-action-wrap">
-                                <div class="pro-details-buy-now" >
+                                <div class="pro-details-buy-now" th:if="${item.itemSellStatus == T(kr.co.pjshop.constant.ItemSellStatus).SELL}" >
                                     <a onclick="addCart2()">Buy Now</a>
 
                                 </div>
@@ -238,15 +238,15 @@
                                 <div class="pro-details-action">
                                     <a title="Add to Cart" href="#" onclick="addCart()"><i class="icon-basket"></i></a>
                                 </div>
-                                <div th:if="${item.itemSellStatus == T(kr.co.pjshop.constant.ItemSellStatus).SELL}" class="text-right">
+<!--                                <div th:if="${item.itemSellStatus == T(kr.co.pjshop.constant.ItemSellStatus).SELL}" class="text-right">-->
 
-                                    <button type="button" class="btn btn-primary btn-lg" onclick="order()">주문하기</button>
-                                    <button type="button" class="btn btn-light border border-primary btn-lg" onclick="addCart2()">주문하기2</button>
-                                </div>
-                                <div th:unless="${item.itemSellStatus == T(kr.co.pjshop.constant.ItemSellStatus).SELL}" class="text-right">
-                                    <button type="button" class="btn btn-danger btn-lg">품절</button>
+<!--&lt;!&ndash;                                    <button type="button" class="btn btn-primary btn-lg" onclick="order()">주문하기</button>&ndash;&gt;-->
+<!--                                    <button type="button" class="btn btn-light border border-primary btn-lg" onclick="addCart2()">주문하기2</button>-->
+<!--                                </div>-->
+<!--                                <div th:unless="${item.itemSellStatus == T(kr.co.pjshop.constant.ItemSellStatus).SELL}" class="text-right">-->
+<!--                                    <button type="button" class="btn btn-danger btn-lg">품절</button>-->
 
-                                </div>
+<!--                                </div>-->
                             </div>
                         </div>
                     </div>

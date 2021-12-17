@@ -299,13 +299,13 @@
                                             <div class="myaccount-table table-responsive text-center" th:each="order : ${orders.getContent()}">
                                                 <table class="table table-bordered">
                                                     <thead class="thead-light">
-                                                    <tr>
-                                                        <th>DATE</th>
-                                                        <th>PRODUCT</th>
-                                                        <th>NAME</th>
-                                                        <th>TOTAL</th>
-                                                        <th>CANCLE</th>
-                                                    </tr>
+<!--                                                    <tr>-->
+<!--                                                        <th>DATE</th>-->
+<!--                                                        <th>PRODUCT</th>-->
+<!--                                                        <th>NAME</th>-->
+<!--                                                        <th>TOTAL</th>-->
+<!--                                                        <th>CANCLE</th>-->
+<!--                                                    </tr>-->
                                                     </thead>
                                                     <tbody>
                                                     <tr th:each="orderItem : ${order.orderItemDtoList}">
@@ -330,27 +330,27 @@
                                                     </tbody>
                                                 </table>
                                             </div>
-                                            <div th:with="start=${(orders.number/maxPage)*maxPage + 1}, end=(${(orders.totalPages == 0) ? 1 : (start + (maxPage - 1) < orders.totalPages ? start + (maxPage - 1) : orders.totalPages)})" >
-                                                <ul class="pagination justify-content-center">
+<!--                                            <div th:with="start=${(orders.number/maxPage)*maxPage + 1}, end=(${(orders.totalPages == 0) ? 1 : (start + (maxPage - 1) < orders.totalPages ? start + (maxPage - 1) : orders.totalPages)})" >-->
+<!--                                                <ul class="pagination justify-content-center">-->
 
-                                                    <li class="page-item" th:classappend="${orders.number eq 0}?'disabled':''">
-                                                        <a th:href="@{'/orders/' + ${orders.number-1}}" aria-label='Previous' class="btn btn-outline-secondary">
-                                                            <span aria-hidden='true'><</span>
-                                                        </a>
-                                                    </li>
+<!--                                                    <li class="page-item" th:classappend="${orders.number eq 0}?'disabled':''">-->
+<!--                                                        <a th:href="@{'/orders/' + ${orders.number-1}}" aria-label='Previous' class="btn btn-outline-secondary">-->
+<!--                                                            <span aria-hidden='true'><</span>-->
+<!--                                                        </a>-->
+<!--                                                    </li>-->
 
-                                                    <li class="btn-outline-secondary" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${orders.number eq page-1}?'active':''">
-                                                        <a th:href="@{'/orders/' + ${page-1}}" th:inline="text" class="btn btn-outline-secondary" >[[${page}]]</a>
-                                                    </li>
+<!--                                                    <li class="btn-outline-secondary" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${orders.number eq page-1}?'active':''">-->
+<!--                                                        <a th:href="@{'/orders/' + ${page-1}}" th:inline="text" class="btn btn-outline-secondary" >[[${page}]]</a>-->
+<!--                                                    </li>-->
 
-                                                    <li class="page-item" th:classappend="${orders.number+1 ge orders.totalPages}?'disabled':''">
-                                                        <a th:href="@{'/orders/' + ${orders.number+1}}" aria-label='Next' class="btn btn-outline-secondary">
-                                                            <span aria-hidden='true'>></span>
-                                                        </a>
-                                                    </li>
+<!--                                                    <li class="page-item" th:classappend="${orders.number+1 ge orders.totalPages}?'disabled':''">-->
+<!--                                                        <a th:href="@{'/orders/' + ${orders.number+1}}" aria-label='Next' class="btn btn-outline-secondary">-->
+<!--                                                            <span aria-hidden='true'>></span>-->
+<!--                                                        </a>-->
+<!--                                                    </li>-->
 
-                                                </ul>
-                                            </div>
+<!--                                                </ul>-->
+<!--                                            </div>-->
                                         </div>
                                     </div>
                                     <!-- Single Tab Content End -->
